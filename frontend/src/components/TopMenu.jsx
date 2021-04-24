@@ -20,6 +20,8 @@ export default function TopMenu() {
     const items = [
         { label: 'Início', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'Cadastro de serviço', icon: 'pi pi-fw pi-home', to: '/Cadastro/Servico' },
+        { label: 'Cadastro de médicos', icon: 'pi pi-fw pi-home', to: '/Cadastro/Medicos' },
+
     ];
 
     const redirect = items.map((item) => (

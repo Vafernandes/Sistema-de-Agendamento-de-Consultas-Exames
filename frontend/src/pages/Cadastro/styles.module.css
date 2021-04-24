@@ -1,0 +1,9 @@
+.cadastroServicoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastroServicoInputs {
+    padding-top: 20px;
+}

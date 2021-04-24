@@ -3,6 +3,8 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
+import { Card } from 'primereact/card';
+import styles from './styles.module.css'
 
 export default function CadastroServico(props) {
     const cities = [
@@ -12,41 +14,46 @@ export default function CadastroServico(props) {
     ];
 
     return (
-        <div>
+        <div className={styles.cadastroServicoContainer}>
             <Form
                 onSubmit={dados => console.log(dados)}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <h2>Cadastro de Serviço</h2>
+                        <Card style={{ width: '400px' }}>
+                            <h2>Cadastro de Serviço</h2>
 
-                        <Field
-                            name="servico"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
-                                </span>
-                            )}
-                        />
+                            <div className={`${styles.cadastroServicoInputs}`}>
+                                <Field
+                                    name="servico"
+                                    render={({ input }) => (
+                                        <span className="p-d-flex p-flex-column">
+                                            <label>Serviço</label>
+                                            <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
+                                        </span>
+                                    )}
+                                />
 
-                        <Field
-                            name="nome"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Nome</label>
-                                </span>
-                            )}
-                        />
+                                <Field
+                                    name="nome"
+                                    render={({ input }) => (
+                                        <span className="p-d-flex p-flex-column">
+                                            <label>Nome</label>
+                                            <InputText {...input} />
+                                        </span>
+                                    )}
+                                />
 
-                        <Field
-                            name="preco"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Preço</label>
-                                </span>
-                            )}
-                        />
+                                <Field
+                                    name="preco"
+                                    render={({ input }) => (
+                                        <span className="p-d-flex p-flex-column">
+                                            <label>Preço</label>
+                                            <InputText {...input} />
+                                        </span>
+                                    )}
+                                />
+                            </div>
+                        </Card>
 
                         <h2>Lista de Médicos</h2>
 
@@ -76,7 +83,7 @@ export default function CadastroServico(props) {
                             name="dataHora"
                             render={({ input }) => (
                                 <span className="p-float-label">
-                                    <Calendar id="time24" showTime showSeconds {...input}/>
+                                    <Calendar id="time24" showTime showSeconds {...input} />
                                     <label>Hora</label>
                                 </span>
                             )}

@@ -1,4 +1,3 @@
-import { CardDemo } from "../components/CardServico";
 import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
 import { useState } from "react";
