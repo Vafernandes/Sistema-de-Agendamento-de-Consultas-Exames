@@ -2,8 +2,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .cadastroServicoInputs {
     padding-top: 20px;
+}
+
+.inputStyles {
+    margin-bottom: 15px;
+}
+
+.inputStyles span label {
+    margin-bottom: 5px;
 }

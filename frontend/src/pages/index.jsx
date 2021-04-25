@@ -19,7 +19,6 @@ export default function SidebarDemo() {
             <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
                 <div className="p-mr-5">
                     <CardDemo url="/Consultas">
-                        <i className="pi pi-plus"></i>
                         <p>Consultas</p>
                     </CardDemo>
                 </div>
