@@ -1,130 +1,123 @@
 import { Form, Field } from 'react-final-form'
 import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
+
 import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
+import { useState } from 'react';
+import Botoes from '../../components/Botoes';
+import Tabela from '../../components/Tabela';
+import { Dialog } from 'primereact/dialog';
+import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.css'
 
 export default function CadastroServico(props) {
+    const [ativarCadastro, setAtivarCadastro] = useState(false)
+    const [elementoSelecionado, setElementoSelecionado] = useState(null)
+
     const cities = [
         { name: 'Consultas', code: 'C' },
         { name: 'Exames', code: 'E' },
         { name: 'Teste Covid', code: 'TC' },
     ];
 
+    const medicos = [
+        { nome: 'Fulano', crm: '1234564' },
+        { nome: 'Beltrano', crm: '1234564' },
+        { nome: 'Ciclano', crm: '1234564' },
+    ]
+
+
+    const renderFooter = () => {
+        return (
+            <Botoes botoes={[
+                { nome: 'Cancelar', tipo: 'text', icone: 'pi-times', func: () => { setAtivarCadastro(false) } },
+            ]} />
+        );
+    }
+
     return (
-        <div className={styles.cadastroServicoContainer}>
-            <Form
-                onSubmit={dados => console.log(dados)}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Card style={{ width: '400px' }}>
-                            <h2>Cadastro de Serviço</h2>
+        <div style={{ padding: '0 50px 50px 50px' }}>
+            <h1>Cadastro de Serviço</h1>
 
-                            <div className={`${styles.cadastroServicoInputs}`}>
-                                <Field
-                                    name="servico"
-                                    render={({ input }) => (
-                                        <span className="p-d-flex p-flex-column">
-                                            <label>Serviço</label>
-                                            <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
-                                        </span>
-                                    )}
-                                />
+            <Card style={{ marginBottom: '20px' }}>
+                <Botoes botoes={[
+                    { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
+                    { nome: 'Editar', tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
+                    { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
+                ]} />
+            </Card>
 
-                                <Field
-                                    name="nome"
-                                    render={({ input }) => (
-                                        <span className="p-d-flex p-flex-column">
-                                            <label>Nome</label>
-                                            <InputText {...input} />
-                                        </span>
-                                    )}
-                                />
+            <Card>
+                <Tabela
+                    lista={medicos}
+                    elementoSelecionado={elementoSelecionado}
+                    setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
+                    id='nome'
+                    colunas={[
+                        { coluna: 'nome', nomeColuna: 'Nome' },
+                        { coluna: 'crm', nomeColuna: 'CRM' }
+                    ]}
+                />
+            </Card>
 
-                                <Field
-                                    name="preco"
-                                    render={({ input }) => (
-                                        <span className="p-d-flex p-flex-column">
-                                            <label>Preço</label>
-                                            <InputText {...input} />
-                                        </span>
-                                    )}
-                                />
-                            </div>
-                        </Card>
+            <Dialog header="Cadastro de serviços" visible={ativarCadastro} onHide={() => setAtivarCadastro(false)} breakpoints={{ '960px': '75vw' }} style={{ width: '50vw' }} footer={renderFooter}>
+                <div className={styles.cadastroServicoContainer}>
+                    <div style={{ width: '100%' }}>
+                        <Form
+                            onSubmit={dados => console.log(dados)}
+                            render={({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <h2>Dados pessoais</h2>
 
-                        <h2>Lista de Médicos</h2>
+                                    <div className={styles.inputStyles}>
+                                        <Field
+                                            name="servico"
+                                            render={({ input }) => (
+                                                <span className="p-d-flex p-flex-column">
+                                                    <label>Tipos de serviço</label>
+                                                    <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
 
-                        <Field
-                            name="nomeMedico"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Nome do Médico(A)</label>
-                                </span>
+                                                </span>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className={styles.inputStyles}>
+                                        <Field
+                                            name="nome"
+                                            render={({ input }) => (
+                                                <span className="p-d-flex p-flex-column">
+                                                    <label>Nome</label>
+                                                    <InputText {...input} />
+                                                </span>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className={styles.inputStyles}>
+                                        <Field
+                                            name="preco"
+                                            render={({ input }) => (
+                                                <span className="p-d-flex p-flex-column">
+                                                    <label>Preço</label>
+                                                    <InputText {...input} />
+                                                </span>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <Botoes botoes={[
+                                        { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check' }
+                                    ]} />
+                                </form>
                             )}
                         />
 
-                        <Field
-                            name="crm"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>CRM</label>
-                                </span>
-                            )}
-                        />
-
-                        <h3>Horários disponíveis</h3>
-
-                        <Field
-                            name="dataHora"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <Calendar id="time24" showTime showSeconds {...input} />
-                                    <label>Hora</label>
-                                </span>
-                            )}
-                        />
-
-                        <h2>Lista de Endereços</h2>
-
-                        <Field
-                            name="local"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Local</label>
-                                </span>
-                            )}
-                        />
-
-                        <Field
-                            name="endereco"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Endereço</label>
-                                </span>
-                            )}
-                        />
-
-                        <Field
-                            name="numero"
-                            render={({ input }) => (
-                                <span className="p-float-label">
-                                    <InputText {...input} />
-                                    <label>Número</label>
-                                </span>
-                            )}
-                        />
-
-                        <Button label="Success" className="p-button-success" />
-                    </form>
-                )}
-            />
+                    </div>
+                </div>
+            </Dialog>
         </div>
+
     )
 }

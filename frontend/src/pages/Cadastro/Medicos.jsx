@@ -20,6 +20,28 @@ export default function Medicos() {
         { nome: 'Ciclano', crm: '1234564' },
     ]
 
+    const paymentOptions = [
+        { name: '07:30', value: 1 },
+        { name: '08:00', value: 2 },
+        { name: '08:30', value: 3 },
+        { name: '08:30', value: 4 },
+        { name: '09:00', value: 5 },
+        { name: '09:30', value: 6 },
+        { name: '10:00', value: 7 },
+        { name: '10:30', value: 8 },
+        { name: '11:00', value: 9 },
+        { name: '11:30', value: 10 },
+        { name: '13:00', value: 11 },
+        { name: '13:30', value: 12 },
+        { name: '14:00', value: 13 },
+        { name: '14:30', value: 14 },
+        { name: '15:00', value: 15 },
+        { name: '15:30', value: 16 },
+        { name: '16:00', value: 17 },
+        { name: '16:30', value: 18 },
+        { name: '17:00', value: 19 },
+    ];
+
     const renderFooter = () => {
         return (
             <Botoes botoes={[
@@ -27,25 +49,6 @@ export default function Medicos() {
             ]} />
         );
     }
-
-    const paymentOptions = [
-        {name: '07:30', value: 1},
-        {name: '08:30', value: 2},
-        {name: '09:30', value: 3},
-        {name: '10:00', value: 4},
-        {name: '10:30', value: 5},
-        {name: '11:00', value: 6},
-        {name: '11:30', value: 7},
-        {name: '13:00', value: 8},
-        {name: '13:30', value: 9},
-        {name: '14:00', value: 10},
-        {name: '14:30', value: 11},
-        {name: '15:00', value: 12},
-        {name: '15:30', value: 13},
-        {name: '16:00', value: 14},
-        {name: '16:30', value: 15},
-        {name: '17:00', value: 16},
-    ];
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
@@ -113,21 +116,22 @@ export default function Medicos() {
                                             name="hora"
                                             render={({ input }) => (
                                                 <span className="p-d-flex p-flex-column">
-                                                    <SelectButton options={paymentOptions} optionLabel="name" multiple {...input}/>
+                                                    <SelectButton options={paymentOptions} optionLabel="name" multiple {...input} />
                                                 </span>
                                             )}
                                         />
                                     </div>
-
-                                    <Field
-                                        name="dataHora"
-                                        render={({ input }) => (
-                                            <span className="p-d-flex p-flex-column">
-                                                <label>Datas de atendimento</label>
-                                                <Calendar {...input} />
-                                            </span>
-                                        )}
-                                    />
+                                    <div className={styles.inputStyles}>
+                                        <Field
+                                            name="dataHora"
+                                            render={({ input }) => (
+                                                <span className="p-d-flex p-flex-column">
+                                                    <label>Datas de atendimento</label>
+                                                    <Calendar {...input} />
+                                                </span>
+                                            )}
+                                        />
+                                    </div>
 
                                     <Botoes botoes={[
                                         { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check' }
