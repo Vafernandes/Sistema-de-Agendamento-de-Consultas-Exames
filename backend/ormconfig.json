@@ -2,11 +2,9 @@
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "postgres",
+    "username": "docker",
     "password": "123456",
     "database": "servicoshospitalares",
-    "synchronize": true,
-    "logging": false,
     "entities": [
         "./src/models/entity/**/*.ts"
     ],
