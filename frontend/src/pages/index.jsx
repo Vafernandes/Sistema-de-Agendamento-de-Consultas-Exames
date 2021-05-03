@@ -1,7 +1,7 @@
 import { CardDemo } from '../components/CardServico'
 
 export default function SidebarDemo() {
-    
+
     return (
         <div className="p-d-flex p-flex-column" >
 
@@ -23,12 +23,12 @@ export default function SidebarDemo() {
                     </CardDemo>
                 </div>
                 <div className="p-mr-5">
-                    <CardDemo url="/">
+                    <CardDemo url="/Exames">
                         <p>Exames</p>
                     </CardDemo>
                 </div>
                 <div className="p-mr-5">
-                    <CardDemo url="/">
+                    <CardDemo url="/Testes">
                         <p>Testes de covid</p>
                     </CardDemo>
                 </div>

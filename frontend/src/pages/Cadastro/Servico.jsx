@@ -68,11 +68,11 @@ export default function CadastroServico(props) {
                             onSubmit={dados => console.log(dados)}
                             render={({ handleSubmit }) => (
                                 <form onSubmit={handleSubmit}>
-                                    <h2>Dados pessoais</h2>
+                                    <h2>Dados do serviço</h2>
 
                                     <div className={styles.inputStyles}>
                                         <Field
-                                            name="servico"
+                                            name="tipo_servico"
                                             render={({ input }) => (
                                                 <span className="p-d-flex p-flex-column">
                                                     <label>Tipos de serviço</label>
