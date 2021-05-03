@@ -2,22 +2,23 @@ import { Form, Field } from 'react-final-form'
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 
-import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
 import { useState } from 'react';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import { Dialog } from 'primereact/dialog';
-import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.css'
 
-export default function CadastroServico(props) {
+import { connect } from 'react-redux'
+import { cadastrarRequest } from '../../store/cadastroFinalForm/action';
+
+function CadastroServico(props) {
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
 
     const cities = [
-        { name: 'Consultas', code: 'C' },
-        { name: 'Exames', code: 'E' },
+        { name: 'Consulta', code: 'C' },
+        { name: 'Exame', code: 'E' },
         { name: 'Teste Covid', code: 'TC' },
     ];
 
@@ -65,7 +66,7 @@ export default function CadastroServico(props) {
                 <div className={styles.cadastroServicoContainer}>
                     <div style={{ width: '100%' }}>
                         <Form
-                            onSubmit={dados => console.log(dados)}
+                            onSubmit={props.cadastrarRequest}
                             render={({ handleSubmit }) => (
                                 <form onSubmit={handleSubmit}>
                                     <h2>Dados do serviço</h2>
@@ -121,3 +122,14 @@ export default function CadastroServico(props) {
 
     )
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        cadastrarRequest(dadosCadastrais) {
+            const action = cadastrarRequest(dadosCadastrais)
+            dispatch(action)
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(CadastroServico)
