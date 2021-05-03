@@ -5,12 +5,13 @@
     "username": "docker",
     "password": "123456",
     "database": "servicoshospitalares",
+    "entities": [
+        "./src/entities/*.ts"
+    ],
+    "migrations": [
+        "./src/database/migrations/*.ts"
+    ],
     "cli": {
-        "entities": [
-            "./src/entities/entity/*.ts"
-        ],
-        "migrations": [
-            "./src/database/migrations/*.ts"
-        ]
+        "migrationsDir": "./src/database/migrations"
     }
 }

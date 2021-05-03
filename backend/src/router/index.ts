@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { serviceRouter } from './serviceRouter'
+import { medicosRouter } from './medicosRouter'
 
 const router = Router()
 
-router.use('/service', serviceRouter)
+router.use('/medicos', medicosRouter)
 
 export { router }
