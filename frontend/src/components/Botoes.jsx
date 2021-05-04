@@ -10,6 +10,7 @@ const Botoes = (props) => {
                 className={`p-button-${botao.tipo}`} 
                 icon={`pi ${botao.icone}`} 
                 onClick={typeof botao.func === 'function' ? botao.func : () => {}}
+                style={{ margin: '5px' }}
             />
         })
     }

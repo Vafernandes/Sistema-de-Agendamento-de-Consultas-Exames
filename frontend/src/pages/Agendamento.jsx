@@ -1,11 +1,22 @@
 import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
 import { useState } from "react";
+import { addLocale } from 'primereact/api';
 
 
 export default function Agendamento() {
     const [date15, setDate15] = useState(null);
 
+    addLocale('pt', {
+        firstDayOfWeek: 1,
+        dayNames: ['domingo', 'sgunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
+        dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+        monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+        monthNamesShort: ['jan', 'feb', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+        today: 'Hoje',
+        clear: 'Claro'
+    });
 
     return (
         <div className="p-d-flex p-flex-column" >
@@ -23,10 +34,9 @@ export default function Agendamento() {
                         <p className="p-m-0" style={{ lineHeight: '1.5' }}>Rua Desembargador, 500</p>
                     </Card>
                 </div>
-                <div className="p-mr-6" >
+                <div className="p-mr-6">
                     <h4>Escolha uma data</h4>
-
-                    <Calendar  value={date15} onChange={(e) => setDate15(e.value)} inline showWeek />
+                    <Calendar inline dateFormat="dd/mm/yy" value={date15} onChange={(e) => setDate15(e.value)} locale="pt" dateFormat="dd/mm/yy" />
                 </div>
                 <div className="p-mr-6">
                     <h4>Escolha um horário</h4>

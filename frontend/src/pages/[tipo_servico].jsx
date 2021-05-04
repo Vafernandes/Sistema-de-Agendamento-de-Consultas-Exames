@@ -2,6 +2,7 @@ import { Card } from 'primereact/card';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { api } from '../service/api';
+import styles from '../components/CardServico/cardServico.module.css'
 
 export default function Classe(props) {
     const router = useRouter()
@@ -11,7 +12,7 @@ export default function Classe(props) {
             return <div key={servico.id} className="p-mr-5">
                 <Link href="/Agendamento">
                     <a>
-                        <Card title={servico.nome} style={{ width: '20rem', marginBottom: '2em' }}>
+                        <Card className={styles.cardTipoServico} title={servico.nome}>
                             <p className="p-m-0" style={{ lineHeight: '1.5' }}>Preço: {servico.preco}</p>
                             <p className="p-m-0" style={{ lineHeight: '1.5' }}>Tipo de servicço: {servico.tipo_servico}</p>
                             <p className="p-m-0" style={{ lineHeight: '1.5' }}>Endereço: </p>

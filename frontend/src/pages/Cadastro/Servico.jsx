@@ -64,7 +64,7 @@ function CadastroServico(props) {
                         { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
                         { coluna: 'nome', nomeColuna: 'Nome' },
                         { coluna: 'preco', nomeColuna: 'Preço' },
-                        { nomeColuna: 'Editar/Excluir', acao: editarExcluir }
+                        { acao: editarExcluir }
                     ]}
                 />
             </Card>

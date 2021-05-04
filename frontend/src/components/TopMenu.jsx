@@ -19,15 +19,16 @@ export default function TopMenu() {
 
     const items = [
         { label: 'Início', icon: 'pi pi-fw pi-home', to: '/' },
-        { label: 'Cadastro de serviço', icon: 'pi pi-fw pi-home', to: '/Cadastro/Servico' },
-        { label: 'Cadastro de médicos', icon: 'pi pi-fw pi-home', to: '/Cadastro/Medicos' },
+        { label: 'Cadastro de serviço', icon: 'pi pi-fw pi-plus', to: '/Cadastro/Servico' },
+        { label: 'Cadastro de médicos', icon: 'pi pi-fw pi-plus', to: '/Cadastro/Medicos' },
 
     ];
 
     const redirect = items.map((item) => (
-        <li key={item.label}>
+        <li key={item.label} >
+            <i className={`${item.icon} p-mr-2`} />
             <Link href={`${item.to}`}>
-                <a >
+                <a>
                     {item.label}
                 </a>
             </Link>
@@ -44,7 +45,7 @@ export default function TopMenu() {
                 </ul>
             </Sidebar>
 
-            <div className="p-d-flex p-p-3 card">
+            <div className="card p-d-flex p-p-3" style={{ backgroundColor: '#fff' }}>
                 <Button icon="pi pi-bars" className="p-mr-2 p-button-rounded p-button-text" onClick={() => setVisibilidadeMenu(true)} />
                 <Dropdown value={estadoSelecionado} options={cities} onChange={e => setEstadoSelecionado(e.value)} optionLabel="name" placeholder="Estado" />
 

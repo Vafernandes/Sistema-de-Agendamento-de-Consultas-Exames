@@ -2,11 +2,55 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 15rem;
-    height: 10rem;
+    width: 13rem;
+    height: 8rem;
     font-size: 20px;
-    background-color: #222;
+    background-color: #A5BEFA;
     color: #fff;
     border-radius: 20px;
     margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.cardServico:hover {
+    width: 14rem;
+    height: 9rem;
+    transition: 0.3s;
+    margin-top: -10px;
+    font-size: 22px;
+    background-color: #376eee;
+}
+
+.cardServico:active {
+    border: 5px solid #376eee;
+    transition: 0.1s;
+}
+
+
+.cardTipoServico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15rem;
+    height: 10rem;
+    background-color: #A5BEFA;
+    color: #fff;
+    border-radius: 20px;
+    transition: 0.3s;
+    margin: 1rem;
+    font-weight: 600;
+}
+
+.cardTipoServico:hover {
+    width: 16rem;
+    height: 11rem;
+    transition: 0.3s;
+    margin-top: -10px;
+    font-size: 17px;
+    background-color: #376eee;
+}
+
+.cardTipoServico:active {
+    border: 5px solid #376eee;
+    transition: 0.1s;
 }
