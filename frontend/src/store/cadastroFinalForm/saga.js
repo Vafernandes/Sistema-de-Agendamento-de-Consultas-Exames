@@ -2,6 +2,10 @@ import { all, takeLatest, put } from 'redux-saga/effects';
 import { cadastrarSuccess } from './action';
 import { CADASTRO_REQUEST } from './types';
 import { api } from '../../service/api';
+import { listarTodosRequest } from '../Servicos/action';
+
+import {toastr} from 'react-redux-toastr'
+
 
 function* cadastrar(action) {
   console.log(action.payload.dadosCadastrais)
@@ -15,14 +19,15 @@ function* cadastrar(action) {
       tipo_servico: tipo_servico.name
     }
 
-    console.log(servico)
-
     yield api.post('/servicos', servico);
-
     yield put(cadastrarSuccess(servico));
+    yield put(listarTodosRequest())
+
+    toastr.success('Sucesso', 'Cadastro Realizado com sucesso!');
 
   } catch (error) {
     console.log(error.message)
+    toastr.error('Erro', `${error.message}`);
   }
 }
 

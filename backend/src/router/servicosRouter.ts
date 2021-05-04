@@ -28,10 +28,22 @@ servicoRouter.get('/:tipo_servico', async (request, response) => {
 
         const servicoService = new ServicoService();
 
-        const servicos = await servicoService.listaTodosOsServicos(tipo_servico);
+        const servicos = await servicoService.listaServicos(tipo_servico);
 
         return response.status(200).json(servicos)
 
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
+servicoRouter.get('/', async (request, response) => {
+    try {
+        const servicoService = new ServicoService();
+
+        const servicos = await servicoService.listaTodosOsServicos();
+
+        return response.status(200).json(servicos);
     } catch (error) {
         return response.status(400).json({ error: error.message });
     }

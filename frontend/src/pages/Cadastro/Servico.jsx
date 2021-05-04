@@ -3,7 +3,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 
 import { Card } from 'primereact/card';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import { Dialog } from 'primereact/dialog';
@@ -11,23 +11,21 @@ import styles from './styles.module.css'
 
 import { connect } from 'react-redux'
 import { cadastrarRequest } from '../../store/cadastroFinalForm/action';
+import { listarTodosRequest } from '../../store/Servicos/action';
 
 function CadastroServico(props) {
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
+
+    useEffect(() => {
+        props.listarTodosRequest()
+    }, [])
 
     const cities = [
         { name: 'Consulta', code: 'C' },
         { name: 'Exame', code: 'E' },
         { name: 'Teste Covid', code: 'TC' },
     ];
-
-    const medicos = [
-        { nome: 'Fulano', crm: '1234564' },
-        { nome: 'Beltrano', crm: '1234564' },
-        { nome: 'Ciclano', crm: '1234564' },
-    ]
-
 
     const renderFooter = () => {
         return (
@@ -37,6 +35,13 @@ function CadastroServico(props) {
         );
     }
 
+    const editarExcluir = (linhaCorrente) => {
+        return <Botoes botoes={[
+            { tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
+            { tipo: 'danger', icone: 'pi-trash' }
+        ]} />
+    }
+
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
             <h1>Cadastro de Serviço</h1>
@@ -44,20 +49,22 @@ function CadastroServico(props) {
             <Card style={{ marginBottom: '20px' }}>
                 <Botoes botoes={[
                     { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
-                    { nome: 'Editar', tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
                     { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
                 ]} />
             </Card>
 
             <Card>
                 <Tabela
-                    lista={medicos}
+                    lista={props.servico}
                     elementoSelecionado={elementoSelecionado}
                     setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
-                    id='nome'
+                    id='id'
                     colunas={[
+                        { coluna: 'id', nomeColuna: 'ID' },
+                        { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
                         { coluna: 'nome', nomeColuna: 'Nome' },
-                        { coluna: 'crm', nomeColuna: 'CRM' }
+                        { coluna: 'preco', nomeColuna: 'Preço' },
+                        { nomeColuna: 'Editar/Excluir', acao: editarExcluir }
                     ]}
                 />
             </Card>
@@ -123,13 +130,23 @@ function CadastroServico(props) {
     )
 }
 
+function mapStateToProps(state) {
+    return {
+        servico: state.servico.listaDeServicos
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         cadastrarRequest(dadosCadastrais) {
             const action = cadastrarRequest(dadosCadastrais)
             dispatch(action)
+        },
+        listarTodosRequest() {
+            const action = listarTodosRequest()
+            dispatch(action)
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(CadastroServico)
+export default connect(mapStateToProps, mapDispatchToProps)(CadastroServico)

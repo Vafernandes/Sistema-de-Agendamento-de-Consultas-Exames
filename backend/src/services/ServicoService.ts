@@ -28,13 +28,19 @@ class ServicoService {
         return servico;
     }
 
-    public async listaTodosOsServicos(tipo_servico: string): Promise<Servicos[]> {
+    public async listaServicos(tipo_servico: string): Promise<Servicos[]> {
         const servicos = this.servicoRepository.find({
             tipo_servico
         });
 
         return servicos;
     }   
+
+    public async listaTodosOsServicos(): Promise<Servicos[]> {
+        const servicos = this.servicoRepository.find();
+
+        return servicos;
+    }
 
 }
 
