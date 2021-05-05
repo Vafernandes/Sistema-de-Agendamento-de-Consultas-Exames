@@ -49,4 +49,18 @@ servicoRouter.get('/', async (request, response) => {
     }
 })
 
+servicoRouter.get('/buscaId/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const servicoService = new ServicoService();
+        
+        const servico = await servicoService.listaServicoPorId(id);
+
+        return response.status(200).json(servico);
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
 export { servicoRouter }

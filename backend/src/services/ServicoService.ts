@@ -42,6 +42,18 @@ class ServicoService {
         return servicos;
     }
 
+    public async listaServicoPorId(id: string): Promise<Servicos> {
+        const servicoExistente = await this.servicoRepository.findOne({
+            id
+        })
+
+        if(!servicoExistente) {
+            throw new Error('Serviço não encontrado!');
+        }
+
+        return servicoExistente
+    }
+
 }
 
 export { ServicoService }

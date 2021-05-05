@@ -1,8 +1,8 @@
 import { Card } from 'primereact/card';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { api } from '../service/api';
-import styles from '../components/CardServico/cardServico.module.css'
+import { api } from '../../service/api';
+import styles from '../../components/CardServico/cardServico.module.css'
 
 export default function Classe(props) {
     const router = useRouter()
@@ -10,11 +10,11 @@ export default function Classe(props) {
     const geraCardsTipoServico = () => {
         return props.servicos.map(servico => {
             return <div key={servico.id} className="p-mr-5">
-                <Link href="/Agendamento">
+                <Link href={`/Agendamento/${servico.id}`}>
                     <a>
                         <Card className={styles.cardTipoServico} title={servico.nome}>
                             <p className="p-m-0" style={{ lineHeight: '1.5' }}>Preço: {servico.preco}</p>
-                            <p className="p-m-0" style={{ lineHeight: '1.5' }}>Tipo de servicço: {servico.tipo_servico}</p>
+                            <p className="p-m-0" style={{ lineHeight: '1.5' }}>Tipo de serviço: {servico.tipo_servico}</p>
                             <p className="p-m-0" style={{ lineHeight: '1.5' }}>Endereço: </p>
                         </Card>
                     </a>

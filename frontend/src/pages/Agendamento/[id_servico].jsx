@@ -2,10 +2,14 @@ import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
 import { useState } from "react";
 import { addLocale } from 'primereact/api';
+import { api } from '../../service/api';
+import { SelectButton } from 'primereact/selectbutton';
+import EnderecosCards from '../../components/EnderecosCards';
 
-
-export default function Agendamento() {
+export default function Agendamento(props) {
     const [date15, setDate15] = useState(null);
+    const [value2, setValue2] = useState(null);
+
 
     addLocale('pt', {
         firstDayOfWeek: 1,
@@ -23,16 +27,17 @@ export default function Agendamento() {
 
             <div className="p-d-flex p-as-center p-flex-column" style={{ padding: '10px' }}>
                 <div className="p-mr-2 p-as-center">
-                    <h1>Nome do serviço</h1>
+                    <h1>{props.servico.nome}</h1>
                 </div>
             </div>
             <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
                 <div className="p-mr-6">
                     <h4>Escolha a clínica</h4>
 
-                    <Card title="Clina RioMar - Fortaleza" style={{ width: '20rem', marginBottom: '2em' }}>
-                        <p className="p-m-0" style={{ lineHeight: '1.5' }}>Rua Desembargador, 500</p>
-                    </Card>
+                    <EnderecosCards enderecosCards={[
+                        { local: 'Clina RioMar - Fortaleza', rua: 'Rua Desembargador', numero: '500' },
+                    ]} />
+
                 </div>
                 <div className="p-mr-6">
                     <h4>Escolha uma data</h4>
@@ -50,4 +55,18 @@ export default function Agendamento() {
             </div>
         </div>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    const idServico = context.params.id_servico;
+
+    const response = await api.get(`servicos/buscaId/${idServico}`);
+
+    const servico = response.data;
+
+    return {
+        props: {
+            servico
+        }
+    }
 }
