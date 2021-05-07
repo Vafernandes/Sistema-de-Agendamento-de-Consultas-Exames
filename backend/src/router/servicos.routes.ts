@@ -63,4 +63,18 @@ servicoRouter.get('/buscaId/:id', async (request, response) => {
     }
 })
 
+servicoRouter.delete('/deletarServico/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const servicoService = new ServicoService();
+
+        await servicoService.deletarServico(id);
+
+        return response.status(200).json({ message: 'Deletado com sucesso!' })
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
 export { servicoRouter }

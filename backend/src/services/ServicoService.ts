@@ -54,6 +54,13 @@ class ServicoService {
         return servicoExistente
     }
 
+    public async deletarServico(id: string): Promise<void> {
+
+        await this.listaServicoPorId(id);
+
+        await this.servicoRepository.delete(id);
+    }
+
 }
 
 export { ServicoService }

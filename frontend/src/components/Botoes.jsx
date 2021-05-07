@@ -11,6 +11,7 @@ const Botoes = (props) => {
                 icon={`pi ${botao.icone}`} 
                 onClick={typeof botao.func === 'function' ? botao.func : () => {}}
                 style={{ margin: '5px' }}
+                type={botao.submit ? botao.submit : 'button'}
             />
         })
     }

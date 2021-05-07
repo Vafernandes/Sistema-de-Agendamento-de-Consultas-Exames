@@ -1,4 +1,9 @@
-import { LISTAR_TODOS_REQUEST, LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR } from "./types";
+import { 
+    LISTAR_TODOS_REQUEST, 
+    LISTAR_TODOS_SUCCESS, 
+    LISTAR_TODOS_ERROR, 
+    DELETAR_REQUEST
+} from "./types";
 
 export function listarTodosRequest() {
     return {
@@ -20,3 +25,9 @@ export function listarTodosError() {
     }
 }
 
+export function deletar(id) {
+    return {
+        type: DELETAR_REQUEST,
+        payload: { id }
+    }
+}

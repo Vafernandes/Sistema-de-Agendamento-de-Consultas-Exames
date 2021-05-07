@@ -11,7 +11,7 @@ import styles from './styles.module.css'
 
 import { connect } from 'react-redux'
 import { cadastrarRequest } from '../../store/cadastroFinalForm/action';
-import { listarTodosRequest } from '../../store/Servicos/action';
+import { deletar, listarTodosRequest } from '../../store/Servicos/action';
 
 function CadastroServico(props) {
     const [ativarCadastro, setAtivarCadastro] = useState(false)
@@ -38,8 +38,14 @@ function CadastroServico(props) {
     const editarExcluir = (linhaCorrente) => {
         return <Botoes botoes={[
             { tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
-            { tipo: 'danger', icone: 'pi-trash' }
+            { tipo: 'danger', icone: 'pi-trash', func: () => { props.deletar(linhaCorrente.id) } }
         ]} />
+    }
+
+    const criarServico = (obj) => {
+        props.cadastrarRequest(obj);
+
+        setAtivarCadastro(false);
     }
 
     return (
@@ -73,7 +79,7 @@ function CadastroServico(props) {
                 <div className={styles.cadastroServicoContainer}>
                     <div style={{ width: '100%' }}>
                         <Form
-                            onSubmit={props.cadastrarRequest}
+                            onSubmit={criarServico}
                             render={({ handleSubmit }) => (
                                 <form onSubmit={handleSubmit}>
                                     <h2>Dados do serviço</h2>
@@ -116,7 +122,7 @@ function CadastroServico(props) {
                                     </div>
 
                                     <Botoes botoes={[
-                                        { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check' }
+                                        { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit'  }
                                     ]} />
                                 </form>
                             )}
@@ -144,6 +150,10 @@ function mapDispatchToProps(dispatch) {
         },
         listarTodosRequest() {
             const action = listarTodosRequest()
+            dispatch(action)
+        },
+        deletar(id) {
+            const action = deletar(id)
             dispatch(action)
         }
     }
