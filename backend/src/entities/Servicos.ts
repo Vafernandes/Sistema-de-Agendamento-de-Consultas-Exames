@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Endereco } from "./Endereco";
 
 @Entity('servicos')
 class Servicos {
@@ -15,12 +16,14 @@ class Servicos {
     @Column()
     preco: number;
 
+    @Column(type => Endereco)
+    endereco: Endereco;
+
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
     updated_at: Date;
-
 }
 
 export { Servicos }

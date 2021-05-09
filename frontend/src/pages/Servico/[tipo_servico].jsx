@@ -2,21 +2,22 @@ import { Card } from 'primereact/card';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { api } from '../../service/api';
-import styles from '../../components/CardServico/cardServico.module.css'
+import styles from '../../components/CardServico/cardServico.module.scss'
+import stylesTipoServico from './styles.module.scss'
 
 export default function Classe(props) {
     const router = useRouter()
 
     const geraCardsTipoServico = () => {
         return props.servicos.map(servico => {
-            return <div key={servico.id} className="p-mr-5">
+            return <div key={servico.id} className={`p-mr-5 ${stylesTipoServico.cardContainer}`} >
                 <Link href={`/Agendamento/${servico.id}`}>
                     <a>
-                        <Card className={styles.cardTipoServico} title={servico.nome}>
-                            <p className="p-m-0" style={{ lineHeight: '1.5' }}>Preço: {servico.preco}</p>
-                            <p className="p-m-0" style={{ lineHeight: '1.5' }}>Tipo de serviço: {servico.tipo_servico}</p>
-                            <p className="p-m-0" style={{ lineHeight: '1.5' }}>Endereço: </p>
-                        </Card>
+                        <div className={styles.cardTipoServico}>
+                            <h3 className="p-m-0">{servico.nome}</h3>
+                        
+                            <p className="p-m-0">Preço: {servico.preco}</p>
+                        </div>
                     </a>
                 </Link>
             </div>
@@ -25,7 +26,7 @@ export default function Classe(props) {
 
     return (
         <div className="p-d-flex p-jc-center p-flex-column">
-            <div className="p-d-flex p-jc-center">
+            <div className={`p-d-flex p-jc-center ${stylesTipoServico.title}`}>
                 <h1>{router.query.tipo_servico}</h1>
             </div>
 

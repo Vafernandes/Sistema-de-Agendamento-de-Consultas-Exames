@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link'
-import styles from './cardServico.module.css'
+import styles from './cardServico.module.scss'
 
 export const CardDemo = (props) => (
     <Link href={`${props.url}`}>
         <a>
-            <div className={styles.cardServico}>
+            <div className={styles.cardTipoServico}>
                 {props.children}
             </div>
         </a>

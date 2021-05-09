@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 
+import styles from './styles.module.scss';
+
 import Link from 'next/link'
 
 export default function TopMenu() {
     const [visibilidadeMenu, setVisibilidadeMenu] = useState(false);
-    const [estadoSelecionado, setEstadoSelecionado] = useState(null);
 
     const items = [
         { label: 'Início', icon: 'pi pi-fw pi-home', to: '/' },
@@ -27,8 +28,8 @@ export default function TopMenu() {
     )
 
     return (
-        <div className="card">
-            <Sidebar visible={visibilidadeMenu} baseZIndex={1000000} onHide={() => setVisibilidadeMenu(false)}>
+        <>
+            <Sidebar visible={visibilidadeMenu} onHide={() => setVisibilidadeMenu(false)}>
                 <h1 style={{ fontWeight: 'normal' }}>Menu</h1>
 
                 <ul>
@@ -36,12 +37,13 @@ export default function TopMenu() {
                 </ul>
             </Sidebar>
 
-            <div className="card p-d-flex p-p-3" style={{ backgroundColor: '#fff' }}>
-                <Button icon="pi pi-bars" className="p-mr-2 p-button-rounded p-button-text" onClick={() => setVisibilidadeMenu(true)} />
+            <div className={styles.headerContainer}>
+                <Button className="p-mr-2 p-button-rounded p-button-text" onClick={() => setVisibilidadeMenu(true)}>
+                    <i className="pi pi-bars" style={{ 'fontSize': '2em', color: 'var(--gray-800)' }}></i>
+                </Button>
 
                 <Button label="Entrar" className="p-ml-auto p-button-success" />
-
             </div>
-        </div>
+        </>
     )
 }

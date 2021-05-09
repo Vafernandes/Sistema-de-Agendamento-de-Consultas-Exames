@@ -1,6 +1,6 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
-import { listarTodosSuccess } from './action';
-import { DELETAR_REQUEST, LISTAR_TODOS_REQUEST } from './types';
+import { listaPorIdSuccess, listarTodosSuccess } from './action';
+import { DELETAR_REQUEST, LISTAR_POR_ID_REQUEST, LISTAR_TODOS_REQUEST } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
 
@@ -28,7 +28,19 @@ function* deletar(action) {
     toastr.error('Erro', `${error.message}`);  }
 }
 
+function* carregarInformacoes(action) {
+  console.log(action.payload.id)
+  try {
+    const servico = action.payload.id;
+
+    yield put(listaPorIdSuccess(servico))
+  } catch (error) {
+    toastr.error('Erro', `${error.message}`); 
+  }
+}
+
 export default all([
   takeLatest(LISTAR_TODOS_REQUEST, listarTodos),
-  takeLatest(DELETAR_REQUEST, deletar)
+  takeLatest(DELETAR_REQUEST, deletar),
+  takeLatest(LISTAR_POR_ID_REQUEST, carregarInformacoes)
 ])

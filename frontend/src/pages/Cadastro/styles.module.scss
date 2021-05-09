@@ -1,7 +1,6 @@
 .cadastroServicoContainer {
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100%;
 }
 
@@ -10,9 +9,18 @@
 }
 
 .inputStyles {
-    margin-bottom: 15px;
+    margin: 1rem 0 1rem 0;
 }
 
 .inputStyles span label {
     margin-bottom: 5px;
 }
+
+.formulario {
+    width: 70%;
+    margin-top: 2rem;
+}
+
+// .butaoFormulario {
+   
+// }

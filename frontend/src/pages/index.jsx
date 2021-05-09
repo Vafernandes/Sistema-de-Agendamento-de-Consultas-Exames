@@ -17,19 +17,19 @@ export default function SidebarDemo() {
             </div>
 
             <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
-                <div className="p-mr-5">
+                <div className="p-mr-5" >
                     <CardDemo url="/Servico/Consultas">
-                        <p>Consultas</p>
+                        <h2>Consultas</h2>
                     </CardDemo>
                 </div>
                 <div className="p-mr-5">
                     <CardDemo url="/Servico/Exames">
-                        <p>Exames</p>
+                        <h2>Exames</h2>
                     </CardDemo>
                 </div>
                 <div className="p-mr-5">
                     <CardDemo url="/Servico/Testes">
-                        <p>Testes de covid</p>
+                        <h2>Testes de covid</h2>
                     </CardDemo>
                 </div>
             </div>

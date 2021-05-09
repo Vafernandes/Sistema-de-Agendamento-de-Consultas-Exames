@@ -1,10 +1,16 @@
 import { getRepository, Repository } from "typeorm";
+import { Endereco } from "../entities/Endereco";
 import { Servicos } from "../entities/Servicos";
 
 interface RequestDTO {
     tipo_servico: string;
     nome: string;
     preco: number;
+    logradouro: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cep: string;
 }
 
 class ServicoService {
@@ -15,12 +21,32 @@ class ServicoService {
         this.servicoRepository = getRepository(Servicos)
     }
 
-    public async execute({ tipo_servico, nome, preco }: RequestDTO): Promise<Servicos> {
+    public async execute({
+        tipo_servico,
+        nome,
+        preco,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cep
+    }: RequestDTO): Promise<Servicos> {
+
+        const endereco = new Endereco()
+
+        const objEndereco = Object.assign(endereco, {
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cep
+        })
 
         const servico = this.servicoRepository.create({
             tipo_servico,
             nome,
-            preco
+            preco,
+            endereco: objEndereco
         });
 
         await this.servicoRepository.save(servico);
@@ -34,7 +60,7 @@ class ServicoService {
         });
 
         return servicos;
-    }   
+    }
 
     public async listaTodosOsServicos(): Promise<Servicos[]> {
         const servicos = this.servicoRepository.find();
@@ -47,7 +73,7 @@ class ServicoService {
             id
         })
 
-        if(!servicoExistente) {
+        if (!servicoExistente) {
             throw new Error('Serviço não encontrado!');
         }
 

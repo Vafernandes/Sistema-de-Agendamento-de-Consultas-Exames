@@ -7,7 +7,7 @@ import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import { Dialog } from 'primereact/dialog';
 import { SelectButton } from 'primereact/selectbutton';
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 
 export default function Medicos() {
 

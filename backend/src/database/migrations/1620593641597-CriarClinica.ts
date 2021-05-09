@@ -1,11 +1,11 @@
-import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey} from "typeorm";
 
-export class CriarServico1620063003904 implements MigrationInterface {
+export class CriarClinica1620593641597 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "servicos",
+                name: "clinicas",
                 columns: [
                     {
                         name: "id",
@@ -15,16 +15,8 @@ export class CriarServico1620063003904 implements MigrationInterface {
                         default: 'uuid_generate_v4()'
                     },
                     {
-                        name: "tipo_servico",
-                        type: "varchar"
-                    },
-                    {
                         name: "nome",
                         type: "varchar"
-                    },
-                    {
-                        name: "preco",
-                        type: "real"
                     },
                     {
                         name: "enderecoLogradouro",
@@ -58,11 +50,26 @@ export class CriarServico1620063003904 implements MigrationInterface {
                     }
                 ]
             })
-        )
+        );
+
+        await queryRunner.addColumn("clinicas", new TableColumn({
+            name: "id_servico",
+            type: "uuid"
+        }));
+
+        await queryRunner.createForeignKey("clinicas", new TableForeignKey({
+            name: "ClinicaServico",
+            columnNames: ["id_servico"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "servicos",
+            onDelete: "CASCADE"
+        }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('servicos');
+        await queryRunner.dropForeignKey("clinicas", "ClinicaServico");
+        await queryRunner.dropColumn("clinicas", "id_servico");
+        await queryRunner.dropTable("clinicas")
     }
 
 }

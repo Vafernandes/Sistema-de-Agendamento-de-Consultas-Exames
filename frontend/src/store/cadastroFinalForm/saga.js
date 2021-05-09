@@ -8,16 +8,23 @@ import {toastr} from 'react-redux-toastr'
 
 
 function* cadastrar(action) {
-  console.log(action.payload.dadosCadastrais)
+
   try {
     
-    const { nome, preco, tipo_servico } = action.payload.dadosCadastrais;
+    const { nome, preco, tipo_servico, logradouro, numero, complemento, bairro, cep } = action.payload.dadosCadastrais;
 
     const servico = {
       nome, 
       preco, 
-      tipo_servico: tipo_servico.name
+      tipo_servico: tipo_servico.name,
+      logradouro,
+      numero,
+      complemento,
+      bairro,
+      cep: cep.replace(/(\d*)-(\d*)/, '$1$2')
     }
+
+    console.log(servico)
 
     yield api.post('/servicos', servico);
     yield put(cadastrarSuccess(servico));

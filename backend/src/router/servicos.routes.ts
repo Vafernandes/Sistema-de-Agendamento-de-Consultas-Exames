@@ -5,14 +5,28 @@ const servicoRouter = Router();
 
 servicoRouter.post('/', async (request, response) => {
     try {
-        const { tipo_servico, nome, preco } = request.body;
+        const { 
+            tipo_servico, 
+            nome, 
+            preco, 
+            logradouro, 
+            numero, 
+            complemento, 
+            bairro, 
+            cep
+        } = request.body;
 
         const servicoService = new ServicoService();
 
         const servico = await servicoService.execute({
             tipo_servico,
             nome,
-            preco
+            preco,
+            logradouro, 
+            numero, 
+            complemento, 
+            bairro, 
+            cep
         });
 
         return response.status(201).json(servico);

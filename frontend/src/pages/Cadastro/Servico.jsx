@@ -6,12 +6,12 @@ import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
-import { Dialog } from 'primereact/dialog';
-import styles from './styles.module.css'
+import { InputMask } from 'primereact/inputmask';
+import styles from './styles.module.scss'
 
 import { connect } from 'react-redux'
 import { cadastrarRequest } from '../../store/cadastroFinalForm/action';
-import { deletar, listarTodosRequest } from '../../store/Servicos/action';
+import { deletar, listaPorId, listarTodosRequest } from '../../store/Servicos/action';
 
 function CadastroServico(props) {
     const [ativarCadastro, setAtivarCadastro] = useState(false)
@@ -35,9 +35,15 @@ function CadastroServico(props) {
         );
     }
 
+    const carregaInformacoesDoServico = (id) => {
+        props.listaPorId(id)
+
+        setAtivarCadastro(true)
+    }
+
     const editarExcluir = (linhaCorrente) => {
         return <Botoes botoes={[
-            { tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
+            { tipo: 'info', icone: 'pi-pencil', func: () => { carregaInformacoesDoServico(linhaCorrente) } },
             { tipo: 'danger', icone: 'pi-trash', func: () => { props.deletar(linhaCorrente.id) } }
         ]} />
     }
@@ -48,89 +54,176 @@ function CadastroServico(props) {
         setAtivarCadastro(false);
     }
 
+    console.log(props.servico.listaDeServicos)
+
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
-            <h1>Cadastro de Serviço</h1>
 
-            <Card style={{ marginBottom: '20px' }}>
-                <Botoes botoes={[
-                    { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
-                    { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
-                ]} />
-            </Card>
+            {
+                ativarCadastro ?
 
-            <Card>
-                <Tabela
-                    lista={props.servico}
-                    elementoSelecionado={elementoSelecionado}
-                    setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
-                    id='id'
-                    colunas={[
-                        { coluna: 'id', nomeColuna: 'ID' },
-                        { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
-                        { coluna: 'nome', nomeColuna: 'Nome' },
-                        { coluna: 'preco', nomeColuna: 'Preço' },
-                        { acao: editarExcluir }
-                    ]}
-                />
-            </Card>
+                    <div className={styles.cadastroServicoContainer}>
+                        <div className={styles.formulario}>
+                            <Form
+                                onSubmit={criarServico}
+                                initialValues={props.servico.servico}
+                                render={({ handleSubmit }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <div>
+                                            <h2>Dados do serviço</h2>
 
-            <Dialog header="Cadastro de serviços" visible={ativarCadastro} onHide={() => setAtivarCadastro(false)} breakpoints={{ '960px': '75vw' }} style={{ width: '50vw' }} footer={renderFooter}>
-                <div className={styles.cadastroServicoContainer}>
-                    <div style={{ width: '100%' }}>
-                        <Form
-                            onSubmit={criarServico}
-                            render={({ handleSubmit }) => (
-                                <form onSubmit={handleSubmit}>
-                                    <h2>Dados do serviço</h2>
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="tipo_servico"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Tipos de serviço</label>
+                                                            <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="tipo_servico"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>Tipos de serviço</label>
-                                                    <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="nome"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Nome</label>
+                                                            <InputText placeholder="Ex: João da Silva" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="preco"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Preço</label>
+                                                            <InputText placeholder="Ex: 100.00" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
 
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="nome"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>Nome</label>
-                                                    <InputText {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
+                                        <div>
+                                            <h2>Dados do endereço</h2>
 
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="preco"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>Preço</label>
-                                                    <InputText {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="logradouro"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Logradouro</label>
+                                                            <InputText placeholder="Ex: Rua Graciliano Ramos" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
-                                    <Botoes botoes={[
-                                        { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit'  }
-                                    ]} />
-                                </form>
-                            )}
-                        />
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="numero"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Número</label>
+                                                            <InputText placeholder="Ex: 560" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="complemento"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Complemento</label>
+                                                            <InputText placeholder="Ex: Próximo ao mercado" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="bairro"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Bairro</label>
+                                                            <InputText placeholder="Ex: Centro" {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="cep"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>CEP</label>
+                                                            <InputMask mask="99999-999" placeholder="00000-000" {...input}/>
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.butaoFormulario}>
+                                            <Botoes botoes={[
+                                                { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
+                                            ]} />
+                                        </div>
+
+
+                                    </form>
+                                )}
+                            />
+
+                            <Botoes botoes={[
+                                { nome: 'Voltar', tipo: 'outlined', icone: 'pi-arrow-left', submit: 'submit', func: () => { setAtivarCadastro(false) } }
+                            ]} />
+
+                        </div>
                     </div>
-                </div>
-            </Dialog>
+
+                    :
+                    <div>
+
+                        <h1 style={{ margin: '2rem 0 2rem 0' }}>Cadastro de Serviço</h1>
+
+                        <Card style={{ marginBottom: '20px' }}>
+                            <Botoes botoes={[
+                                { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
+                                { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
+                            ]} />
+                        </Card>
+
+                        <Card>
+                            <Tabela
+                                lista={props.servico.listaDeServicos}
+                                elementoSelecionado={elementoSelecionado}
+                                setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
+                                id='id'
+                                colunas={[
+                                    { coluna: 'id', nomeColuna: 'ID' },
+                                    { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
+                                    { coluna: 'nome', nomeColuna: 'Nome' },
+                                    { coluna: 'preco', nomeColuna: 'Preço' },
+                                    { coluna: 'endereco.logradouro', nomeColuna: 'Logradouro' },
+                                    { coluna: 'endereco.numero', nomeColuna: 'Número' },
+                                    { coluna: 'endereco.complemento', nomeColuna: 'Complemento' },
+                                    { coluna: 'endereco.cep', nomeColuna: 'CEP' },
+                                    { acao: editarExcluir }
+                                ]}
+                            />
+                        </Card>
+                    </div>
+            }
         </div>
 
     )
@@ -138,7 +231,7 @@ function CadastroServico(props) {
 
 function mapStateToProps(state) {
     return {
-        servico: state.servico.listaDeServicos
+        servico: state.servico
     }
 }
 
@@ -154,6 +247,10 @@ function mapDispatchToProps(dispatch) {
         },
         deletar(id) {
             const action = deletar(id)
+            dispatch(action)
+        },
+        listaPorId(id) {
+            const action = listaPorId(id)
             dispatch(action)
         }
     }
