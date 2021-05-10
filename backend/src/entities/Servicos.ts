@@ -16,9 +16,6 @@ class Servicos {
     @Column()
     preco: number;
 
-    @Column(type => Endereco)
-    endereco: Endereco;
-
     @CreateDateColumn()
     created_at: Date;
 

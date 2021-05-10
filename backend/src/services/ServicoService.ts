@@ -1,16 +1,10 @@
 import { getRepository, Repository } from "typeorm";
-import { Endereco } from "../entities/Endereco";
 import { Servicos } from "../entities/Servicos";
 
 interface RequestDTO {
     tipo_servico: string;
     nome: string;
     preco: number;
-    logradouro: string;
-    numero: string;
-    complemento: string;
-    bairro: string;
-    cep: string;
 }
 
 class ServicoService {
@@ -25,28 +19,12 @@ class ServicoService {
         tipo_servico,
         nome,
         preco,
-        logradouro,
-        numero,
-        complemento,
-        bairro,
-        cep
     }: RequestDTO): Promise<Servicos> {
-
-        const endereco = new Endereco()
-
-        const objEndereco = Object.assign(endereco, {
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cep
-        })
 
         const servico = this.servicoRepository.create({
             tipo_servico,
             nome,
-            preco,
-            endereco: objEndereco
+            preco
         });
 
         await this.servicoRepository.save(servico);

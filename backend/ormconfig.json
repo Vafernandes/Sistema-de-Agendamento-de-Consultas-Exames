@@ -5,13 +5,8 @@
     "username": "docker",
     "password": "123456",
     "database": "servicoshospitalares",
+    "synchronize": true,
     "entities": [
         "./src/entities/*.ts"
-    ],
-    "migrations": [
-        "./src/database/migrations/*.ts"
-    ],
-    "cli": {
-        "migrationsDir": "./src/database/migrations"
-    }
+    ]
 }

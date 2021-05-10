@@ -1,14 +1,22 @@
 import { getRepository, Repository } from "typeorm";
 import { Clinica } from "../entities/Clinica";
 import { Endereco } from "../entities/Endereco";
+import { ServicoService } from "./ServicoService";
 
-interface RequestDTO {
+interface PostClinicaRequestDTO {
     nome: string;
     logradouro: string;
     numero: string;
     complemento: string;
     bairro: string;
     cep: string;
+}
+
+interface PostServicoRequestDTO {
+    id: string;
+    tipo_servico: string;
+    nome: string;
+    preco: number;
 }
 
 class ClinicaService {
@@ -26,7 +34,7 @@ class ClinicaService {
         complemento,
         bairro,
         cep
-    }: RequestDTO): Promise<Clinica> {
+    }: PostClinicaRequestDTO): Promise<Clinica> {
 
         const endereco = new Endereco()
 
@@ -46,6 +54,43 @@ class ClinicaService {
         await this.clinicaRepository.save(clinica);
 
         return clinica;
+    }
+
+
+    public async buscaClinicaPorId(id: string): Promise<Clinica> {
+        const clinicaExiste = await this.clinicaRepository.findOne({
+            id
+        })
+
+        if (!clinicaExiste) {
+            throw new Error('Clinica não encontrado!');
+        }
+
+        return clinicaExiste
+    }
+
+    public async adicionaServicoNaClinica({ id, tipo_servico, nome, preco }: PostServicoRequestDTO) {
+        const clinicaExiste = await this.buscaClinicaPorId(id);
+
+        const servicoService = new ServicoService();
+
+        const servico = await servicoService.execute({
+            tipo_servico, 
+            nome, 
+            preco
+        });
+        
+        clinicaExiste.servicos = [servico];
+
+        await this.clinicaRepository.manager.save(clinicaExiste);
+
+        return clinicaExiste;
+    }
+
+    public async listarTodasClinicas(): Promise<Clinica[]> {
+        const clinicas = await this.clinicaRepository.find();
+
+        return clinicas;
     }
 
 }

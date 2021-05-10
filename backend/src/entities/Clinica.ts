@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Endereco } from "./Endereco";
 import { Servicos } from "./Servicos";
 
+@Entity('clinicas')
 class Clinica {
 
     @PrimaryGeneratedColumn('uuid')
@@ -14,7 +15,7 @@ class Clinica {
     endereco: Endereco;
 
     @ManyToMany(() => Servicos)
-    @JoinTable({ name: 'servicos' })
+    @JoinTable({ name: 'clinicas_servicos' })
     servicos: Servicos[];
 
     @CreateDateColumn()
