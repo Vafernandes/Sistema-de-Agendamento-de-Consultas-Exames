@@ -72,25 +72,31 @@ class ClinicaService {
     public async adicionaServicoNaClinica({ id, tipo_servico, nome, preco }: PostServicoRequestDTO) {
         const clinicaExiste = await this.buscaClinicaPorId(id);
 
-        const servicoService = new ServicoService();
+        // const servicoService = new ServicoService();
 
-        const servico = await servicoService.execute({
-            tipo_servico, 
-            nome, 
-            preco
-        });
+        // const servico = await servicoService.execute({
+        //     tipo_servico, 
+        //     nome, 
+        //     preco
+        // });
         
-        clinicaExiste.servicos = [servico];
+        // clinicaExiste.servicos = [servico];
 
-        await this.clinicaRepository.manager.save(clinicaExiste);
+        // await this.clinicaRepository.manager.save(clinicaExiste);
 
-        return clinicaExiste;
+        // return clinicaExiste;
     }
 
     public async listarTodasClinicas(): Promise<Clinica[]> {
         const clinicas = await this.clinicaRepository.find();
 
         return clinicas;
+    }
+
+    public async listarServicosDaClinica(): Promise<Clinica[]> {
+        const clinica = await this.clinicaRepository.find({ relations: ['servicos'] });
+        
+        return clinica;
     }
 
 }

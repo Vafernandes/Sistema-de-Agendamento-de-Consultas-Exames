@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Endereco } from "./Endereco";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Clinica } from "./Clinica";
 
 @Entity('servicos')
 class Servicos {
@@ -15,6 +15,13 @@ class Servicos {
 
     @Column()
     preco: number;
+
+    @Column({ nullable: true })
+    id_clinica: string;
+
+    @ManyToOne(() => Clinica, clinica => clinica.servicos)
+    @JoinColumn({ name: 'id_clinica' })
+    clinica: Clinica;
 
     @CreateDateColumn()
     created_at: Date;

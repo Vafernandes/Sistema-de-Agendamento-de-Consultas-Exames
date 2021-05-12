@@ -5,15 +5,10 @@ const servicoRouter = Router();
 
 servicoRouter.post('/', async (request, response) => {
     try {
-        const { 
-            tipo_servico, 
-            nome, 
-            preco, 
-            logradouro, 
-            numero, 
-            complemento, 
-            bairro, 
-            cep
+        const {
+            tipo_servico,
+            nome,
+            preco,
         } = request.body;
 
         const servicoService = new ServicoService();
@@ -22,16 +17,11 @@ servicoRouter.post('/', async (request, response) => {
             tipo_servico,
             nome,
             preco,
-            logradouro, 
-            numero, 
-            complemento, 
-            bairro, 
-            cep
         });
 
         return response.status(201).json(servico);
     } catch (error) {
-        
+
         return response.status(400).json({ error: error.message });
     }
 })
@@ -68,7 +58,7 @@ servicoRouter.get('/buscaId/:id', async (request, response) => {
         const { id } = request.params;
 
         const servicoService = new ServicoService();
-        
+
         const servico = await servicoService.listaServicoPorId(id);
 
         return response.status(200).json(servico);
@@ -86,6 +76,18 @@ servicoRouter.delete('/deletarServico/:id', async (request, response) => {
         await servicoService.deletarServico(id);
 
         return response.status(200).json({ message: 'Deletado com sucesso!' })
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
+servicoRouter.get('/listarClinicas', async (request, response) => {
+    try {
+
+        const servicoService = new ServicoService();
+        const servicos = await servicoService.listarClinicasDosServicos();
+
+        return response.status(200).json(servicos);
     } catch (error) {
         return response.status(400).json({ error: error.message });
     }

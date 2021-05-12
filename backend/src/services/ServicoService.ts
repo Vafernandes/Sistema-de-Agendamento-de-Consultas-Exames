@@ -65,6 +65,12 @@ class ServicoService {
         await this.servicoRepository.delete(id);
     }
 
+    public async listarClinicasDosServicos(): Promise<Servicos[]> {
+        const servicos = await this.servicoRepository.find({ relations: ['clinica'] });
+        
+        return servicos;
+    }
+
 }
 
 export { ServicoService }

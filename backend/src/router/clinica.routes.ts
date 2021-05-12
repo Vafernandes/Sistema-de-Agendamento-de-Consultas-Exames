@@ -76,4 +76,16 @@ clinicaRouter.get('/', async (request, response) => {
     }
 })
 
+clinicaRouter.get('/listarServicos', async (request, response) => {
+    try {
+
+        const clinicaService = new ClinicaService();
+        const clinicas = await clinicaService.listarServicosDaClinica();
+
+        return response.status(200).json(clinicas);
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
 export { clinicaRouter }
