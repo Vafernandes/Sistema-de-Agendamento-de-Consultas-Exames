@@ -9,7 +9,13 @@ import Tabela from '../../components/Tabela';
 import styles from './styles.module.scss'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastrarRequestClinica, deletarClinica, listaPorId, listarTodosRequest } from '../../store/Clinicas/action';
+import { 
+    atualizaClinicaRequest, 
+    cadastrarRequestClinica, 
+    deletarClinica, 
+    listaPorId, 
+    listarTodosRequest 
+} from '../../store/Clinicas/action';
 
 function CadastroClinicas(props) {
 
@@ -42,7 +48,11 @@ function CadastroClinicas(props) {
         setAtivarCadastro(false);
     }
 
-    console.log(state.clinica.clinica)
+    const atualizarClinica = (obj) => {
+        dispatch(atualizaClinicaRequest(obj));
+
+        setAtivarCadastro(false);
+    }
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
@@ -53,7 +63,7 @@ function CadastroClinicas(props) {
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
                             <Form
-                                onSubmit={state.clinica.clinica ? atualizarClinica : criaClinica}
+                                onSubmit={state.clinica.clinica.id !== "" ? atualizarClinica : criaClinica}
                                 initialValues={state.clinica.clinica}
                                 render={({ handleSubmit }) => (
                                     <form onSubmit={handleSubmit}>

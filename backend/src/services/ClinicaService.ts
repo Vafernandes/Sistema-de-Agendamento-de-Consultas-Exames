@@ -115,28 +115,32 @@ class ClinicaService {
         await this.clinicaRepository.delete(id);
     }
 
-    // public async atualizarClinica({
-    //     id,
-    //     nome,
-    //     logradouro,
-    //     numero,
-    //     complemento,
-    //     bairro,
-    //     cep
-    // }: AtualizarClinicaRequestDTO) {
-    //     let clinicaExiste = await this.buscaClinicaPorId(id);
+    public async atualizarClinica({
+        id,
+        nome,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cep
+    }: AtualizarClinicaRequestDTO): Promise<Clinica> {
+        const clinicaExiste = await this.buscaClinicaPorId(id);
 
-    //     clinicaExiste = this.clinicaRepository.create({
-    //         nome,
-    //         logradouro,
-    //         numero,
-    //         complemento,
-    //         bairro,
-    //         cep
-    //     })
+        Object.assign(clinicaExiste, {
+            nome,
+            endereco: {
+                logradouro,
+                numero,
+                complemento,
+                bairro,
+                cep
+            }
+        })
 
-    //     await this.clinicaRepository.save(clinicaExiste)
-    // }
+        await this.clinicaRepository.save(clinicaExiste)
+
+        return clinicaExiste;
+    }
 
 }
 

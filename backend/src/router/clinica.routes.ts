@@ -116,7 +116,17 @@ clinicaRouter.put('/atualizarClinica/:id', async (request, response) => {
 
         const clinicaService = new ClinicaService();
 
-        return response.status(200).json({}); 
+        const clinicaAtualizada = await clinicaService.atualizarClinica({
+            id,
+            nome,
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cep
+        })
+
+        return response.status(200).json(clinicaAtualizada); 
     } catch (error) {
         return response.status(400).json({ error: error.message });
     }
