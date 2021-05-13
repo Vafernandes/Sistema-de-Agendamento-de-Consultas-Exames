@@ -1,12 +1,18 @@
-import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS } from "./types";
+import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS, CADASTRO_SUCCESS } from "./types";
 
 const INITIAL_STATE = {
+    dadosCadastrais: {},
     servico: {},
     listaDeServicos: [],
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case CADASTRO_SUCCESS:
+            return {
+                ...state,
+                dadosCadastrais: action.payload.dadosCadastrais,
+            }
         case LISTAR_TODOS_SUCCESS:
             return {
                 ...state,
@@ -17,7 +23,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state
             }
         case LISTAR_POR_ID_SUCCESS:
-            console.log(action.payload.obj)
             return {
                 ...state,
                 servico: action.payload.obj

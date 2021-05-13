@@ -1,60 +1,48 @@
 import { Form, Field } from 'react-final-form'
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
+import { InputMask } from 'primereact/inputmask';
 
 import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
-import { InputMask } from 'primereact/inputmask';
 import styles from './styles.module.scss'
 
-import { connect } from 'react-redux'
-import { cadastrarRequest } from '../../store/cadastroFinalForm/action';
-import { deletar, listaPorId, listarTodosRequest } from '../../store/Servicos/action';
+import { useDispatch, useSelector } from 'react-redux'
+import { cadastrarRequestClinica, deletarClinica, listaPorId, listarTodosRequest } from '../../store/Clinicas/action';
 
-function CadastroClinica(props) {
+function CadastroClinicas(props) {
+
+    const state = useSelector(state => state);
+    const dispatch = useDispatch();
+
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
 
     useEffect(() => {
-        props.listarTodosRequest()
+        dispatch(listarTodosRequest());
     }, [])
 
-    const cities = [
-        { name: 'Consulta', code: 'C' },
-        { name: 'Exame', code: 'E' },
-        { name: 'Teste Covid', code: 'TC' },
-    ];
+    const carregaInformacoesDaClinica = (id) => {
+        dispatch(listaPorId(id));
 
-    const renderFooter = () => {
-        return (
-            <Botoes botoes={[
-                { nome: 'Cancelar', tipo: 'text', icone: 'pi-times', func: () => { setAtivarCadastro(false) } },
-            ]} />
-        );
-    }
-
-    const carregaInformacoesDoServico = (id) => {
-        props.listaPorId(id)
-
-        setAtivarCadastro(true)
+        setAtivarCadastro(true);
     }
 
     const editarExcluir = (linhaCorrente) => {
         return <Botoes botoes={[
-            { tipo: 'info', icone: 'pi-pencil', func: () => { carregaInformacoesDoServico(linhaCorrente) } },
-            { tipo: 'danger', icone: 'pi-trash', func: () => { props.deletar(linhaCorrente.id) } }
+            { tipo: 'info', icone: 'pi-pencil', func: () => { carregaInformacoesDaClinica(linhaCorrente) } },
+            { tipo: 'danger', icone: 'pi-trash', func: () => { dispatch(deletarClinica(linhaCorrente.id)) } }
         ]} />
     }
 
-    const criarServico = (obj) => {
-        props.cadastrarRequest(obj);
+    const criaClinica = (obj) => {
+        dispatch(cadastrarRequestClinica(obj));
 
         setAtivarCadastro(false);
     }
 
-    console.log(props.servico.listaDeServicos)
+    console.log(state.clinica.clinica)
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
@@ -65,52 +53,24 @@ function CadastroClinica(props) {
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
                             <Form
-                                onSubmit={criarServico}
-                                initialValues={props.servico.servico}
+                                onSubmit={state.clinica.clinica ? atualizarClinica : criaClinica}
+                                initialValues={state.clinica.clinica}
                                 render={({ handleSubmit }) => (
                                     <form onSubmit={handleSubmit}>
                                         <div>
-                                            <h2>Dados do serviço</h2>
-
-                                            <div className={styles.inputStyles}>
-                                                <Field
-                                                    name="tipo_servico"
-                                                    render={({ input }) => (
-                                                        <span className="p-d-flex p-flex-column">
-                                                            <label>Tipos de serviço</label>
-                                                            <Dropdown options={cities} optionLabel="name" placeholder="Selecione o serviço" {...input} />
-                                                        </span>
-                                                    )}
-                                                />
-                                            </div>
+                                            <h2>Dados da clínica</h2>
 
                                             <div className={styles.inputStyles}>
                                                 <Field
                                                     name="nome"
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
-                                                            <label>Nome</label>
-                                                            <InputText placeholder="Ex: João da Silva" {...input} />
+                                                            <label>Nome/Local</label>
+                                                            <InputText {...input} />
                                                         </span>
                                                     )}
                                                 />
                                             </div>
-
-                                            <div className={styles.inputStyles}>
-                                                <Field
-                                                    name="preco"
-                                                    render={({ input }) => (
-                                                        <span className="p-d-flex p-flex-column">
-                                                            <label>Preço</label>
-                                                            <InputText placeholder="Ex: 100.00" {...input} />
-                                                        </span>
-                                                    )}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <h2>Dados do endereço</h2>
 
                                             <div className={styles.inputStyles}>
                                                 <Field
@@ -118,7 +78,7 @@ function CadastroClinica(props) {
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
                                                             <label>Logradouro</label>
-                                                            <InputText placeholder="Ex: Rua Graciliano Ramos" {...input} />
+                                                            <InputText  {...input} />
                                                         </span>
                                                     )}
                                                 />
@@ -130,7 +90,7 @@ function CadastroClinica(props) {
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
                                                             <label>Número</label>
-                                                            <InputText placeholder="Ex: 560" {...input} />
+                                                            <InputText {...input} />
                                                         </span>
                                                     )}
                                                 />
@@ -142,7 +102,7 @@ function CadastroClinica(props) {
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
                                                             <label>Complemento</label>
-                                                            <InputText placeholder="Ex: Próximo ao mercado" {...input} />
+                                                            <InputText  {...input} />
                                                         </span>
                                                     )}
                                                 />
@@ -154,7 +114,7 @@ function CadastroClinica(props) {
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
                                                             <label>Bairro</label>
-                                                            <InputText placeholder="Ex: Centro" {...input} />
+                                                            <InputText  {...input} />
                                                         </span>
                                                     )}
                                                 />
@@ -166,7 +126,7 @@ function CadastroClinica(props) {
                                                     render={({ input }) => (
                                                         <span className="p-d-flex p-flex-column">
                                                             <label>CEP</label>
-                                                            <InputMask mask="99999-999" placeholder="00000-000" {...input}/>
+                                                            <InputMask mask="99999-999" {...input}/>
                                                         </span>
                                                     )}
                                                 />
@@ -194,7 +154,7 @@ function CadastroClinica(props) {
                     :
                     <div>
 
-                        <h1 style={{ margin: '2rem 0 2rem 0' }}>Cadastro de Clinica</h1>
+                        <h1 style={{ margin: '2rem 0 2rem 0' }}>Cadastro de Clínicas</h1>
 
                         <Card style={{ marginBottom: '20px' }}>
                             <Botoes botoes={[
@@ -205,18 +165,17 @@ function CadastroClinica(props) {
 
                         <Card>
                             <Tabela
-                                lista={props.servico.listaDeServicos}
+                                lista={state.clinica.listaDeClinicas}
                                 elementoSelecionado={elementoSelecionado}
                                 setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
                                 id='id'
                                 colunas={[
                                     { coluna: 'id', nomeColuna: 'ID' },
-                                    { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
-                                    { coluna: 'nome', nomeColuna: 'Nome' },
-                                    { coluna: 'preco', nomeColuna: 'Preço' },
+                                    { coluna: 'nome', nomeColuna: 'Nome/Local' },
                                     { coluna: 'endereco.logradouro', nomeColuna: 'Logradouro' },
                                     { coluna: 'endereco.numero', nomeColuna: 'Número' },
                                     { coluna: 'endereco.complemento', nomeColuna: 'Complemento' },
+                                    { coluna: 'endereco.bairro', nomeColuna: 'Bairro' },
                                     { coluna: 'endereco.cep', nomeColuna: 'CEP' },
                                     { acao: editarExcluir }
                                 ]}
@@ -229,31 +188,4 @@ function CadastroClinica(props) {
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        servico: state.servico
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        cadastrarRequest(dadosCadastrais) {
-            const action = cadastrarRequest(dadosCadastrais)
-            dispatch(action)
-        },
-        listarTodosRequest() {
-            const action = listarTodosRequest()
-            dispatch(action)
-        },
-        deletar(id) {
-            const action = deletar(id)
-            dispatch(action)
-        },
-        listaPorId(id) {
-            const action = listaPorId(id)
-            dispatch(action)
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CadastroClinica)
+export default CadastroClinicas;

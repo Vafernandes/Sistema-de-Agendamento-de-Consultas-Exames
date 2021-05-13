@@ -4,8 +4,24 @@ import {
     LISTAR_TODOS_ERROR, 
     DELETAR_REQUEST,
     LISTAR_POR_ID_REQUEST,
-    LISTAR_POR_ID_SUCCESS
+    LISTAR_POR_ID_SUCCESS,
+    CADASTRO_REQUEST,
+    CADASTRO_SUCCESS
 } from "./types";
+
+export function cadastrarRequest(dadosCadastrais) {
+    return {
+        type: CADASTRO_REQUEST,
+        payload: { dadosCadastrais }
+    }
+}
+
+export function cadastrarSuccess(dadosCadastrais) {
+    return {
+        type: CADASTRO_SUCCESS,
+        payload: { dadosCadastrais }
+    }
+}
 
 export function listarTodosRequest() {
     return {

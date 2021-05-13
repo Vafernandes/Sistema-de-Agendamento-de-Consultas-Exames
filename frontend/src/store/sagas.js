@@ -1,10 +1,11 @@
 import { all } from 'redux-saga/effects';
-import CadastroFinalForm from './cadastroFinalForm/saga'
-import ServicoSaga from './Servicos/saga'
+
+import ServicoSaga from './Servicos/saga';
+import ClinicaSaga from './Clinicas/saga';
 
 export default function* sagas() {
     return yield all([
-        CadastroFinalForm,
-        ServicoSaga
+        ServicoSaga,
+        ClinicaSaga
     ])
 };

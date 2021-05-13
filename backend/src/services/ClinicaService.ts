@@ -19,6 +19,16 @@ interface PostServicoRequestDTO {
     preco: number;
 }
 
+interface AtualizarClinicaRequestDTO {
+    id: string;
+    nome: string;
+    logradouro: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cep: string;
+}
+
 class ClinicaService {
 
     private clinicaRepository: Repository<Clinica>
@@ -79,7 +89,7 @@ class ClinicaService {
         //     nome, 
         //     preco
         // });
-        
+
         // clinicaExiste.servicos = [servico];
 
         // await this.clinicaRepository.manager.save(clinicaExiste);
@@ -95,9 +105,38 @@ class ClinicaService {
 
     public async listarServicosDaClinica(): Promise<Clinica[]> {
         const clinica = await this.clinicaRepository.find({ relations: ['servicos'] });
-        
+
         return clinica;
     }
+
+    public async deletarClinica(id: string) {
+        await this.buscaClinicaPorId(id);
+
+        await this.clinicaRepository.delete(id);
+    }
+
+    // public async atualizarClinica({
+    //     id,
+    //     nome,
+    //     logradouro,
+    //     numero,
+    //     complemento,
+    //     bairro,
+    //     cep
+    // }: AtualizarClinicaRequestDTO) {
+    //     let clinicaExiste = await this.buscaClinicaPorId(id);
+
+    //     clinicaExiste = this.clinicaRepository.create({
+    //         nome,
+    //         logradouro,
+    //         numero,
+    //         complemento,
+    //         bairro,
+    //         cep
+    //     })
+
+    //     await this.clinicaRepository.save(clinicaExiste)
+    // }
 
 }
 

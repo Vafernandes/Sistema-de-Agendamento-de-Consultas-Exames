@@ -1,4 +1,3 @@
-import { Card } from 'primereact/card';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { api } from '../../service/api';
