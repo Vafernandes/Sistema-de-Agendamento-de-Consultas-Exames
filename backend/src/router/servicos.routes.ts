@@ -9,6 +9,7 @@ servicoRouter.post('/', async (request, response) => {
             tipo_servico,
             nome,
             preco,
+            id_clinica
         } = request.body;
 
         const servicoService = new ServicoService();
@@ -17,6 +18,7 @@ servicoRouter.post('/', async (request, response) => {
             tipo_servico,
             nome,
             preco,
+            id_clinica
         });
 
         return response.status(201).json(servico);

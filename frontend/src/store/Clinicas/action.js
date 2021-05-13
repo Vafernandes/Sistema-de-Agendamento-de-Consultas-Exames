@@ -25,13 +25,13 @@ export function cadastrarSuccessClinica(dadosCadastrais) {
     }
 }
 
-export function listarTodosRequest() {
+export function listarTodosClinicaRequest() {
     return {
         type: LISTAR_TODAS_CLINICAS_REQUEST
     }
 }
 
-export function listarTodosSuccess(listaDeClinicas) {
+export function listarTodosClinicaSuccess(listaDeClinicas) {
     return {
         type: LISTAR_TODAS_CLINICAS_SUCCESS,
         payload: { listaDeClinicas }

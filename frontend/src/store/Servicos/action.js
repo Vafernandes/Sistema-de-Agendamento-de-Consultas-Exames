@@ -6,7 +6,8 @@ import {
     LISTAR_POR_ID_REQUEST,
     LISTAR_POR_ID_SUCCESS,
     CADASTRO_REQUEST,
-    CADASTRO_SUCCESS
+    CADASTRO_SUCCESS,
+    LIMPAR_DADOS_SERVICO
 } from "./types";
 
 export function cadastrarRequest(dadosCadastrais) {
@@ -61,5 +62,11 @@ export function listaPorIdSuccess(obj) {
     return {
         type: LISTAR_POR_ID_SUCCESS,
         payload: { obj }
+    }
+}
+
+export function limparDadosServico() {
+    return {
+        type: LIMPAR_DADOS_SERVICO
     }
 }

@@ -1,5 +1,11 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
-import { atualizaClinicaSuccess, cadastrarSuccessClinica, limparDadosDaClinica, listaPorIdSuccess, listarTodosSuccess } from './action';
+import { 
+  atualizaClinicaSuccess, 
+  cadastrarSuccessClinica, 
+  limparDadosDaClinica, 
+  listaPorIdSuccess, 
+  listarTodosClinicaSuccess 
+} from './action';
 import {
   ATUALIZA_CLINICA_REQUEST,
   CADASTRO_CLINICA_REQUEST,
@@ -30,7 +36,7 @@ function* cadastrar(action) {
     yield api.post('/clinicas', clinica);
 
     yield put(cadastrarSuccessClinica(clinica));
-    yield call(listarTodos);
+    yield call(listarTodasClinicas);
 
     toastr.success('Sucesso', 'Cadastro Realizado com sucesso!');
 
@@ -40,11 +46,11 @@ function* cadastrar(action) {
   }
 }
 
-function* listarTodos() {
+function* listarTodasClinicas() {
   try {
     const response = yield api.get('/clinicas');
 
-    yield put(listarTodosSuccess(response.data));
+    yield put(listarTodosClinicaSuccess(response.data));
 
   } catch (error) {
     console.log(error.message)
@@ -57,7 +63,7 @@ function* deletar(action) {
 
     yield api.delete(`/clinicas/deletarClinica/${id}`)
 
-    yield call(listarTodos)
+    yield call(listarTodasClinicas)
     toastr.success('Sucesso', 'Deletado com sucesso!');
   } catch (error) {
     toastr.error('Erro', `${error.message}`);
@@ -99,7 +105,7 @@ function* atualizarClinica(action) {
     yield api.put(`/clinicas/atualizarClinica/${id}`, clinicaAtualizada);
     
     yield put(atualizaClinicaSuccess());
-    yield call(listarTodos);
+    yield call(listarTodasClinicas);
 
     yield put(limparDadosDaClinica());
     
@@ -112,7 +118,7 @@ function* atualizarClinica(action) {
 
 export default all([
   takeLatest(CADASTRO_CLINICA_REQUEST, cadastrar),
-  takeLatest(LISTAR_TODAS_CLINICAS_REQUEST, listarTodos),
+  takeLatest(LISTAR_TODAS_CLINICAS_REQUEST, listarTodasClinicas),
   takeLatest(DELETAR_CLINICAS_REQUEST, deletar),
   takeLatest(LISTAR_CLINICAS_POR_ID_REQUEST, carregarInformacoes),
   takeLatest(ATUALIZA_CLINICA_REQUEST, atualizarClinica)

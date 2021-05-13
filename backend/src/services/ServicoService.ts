@@ -5,6 +5,7 @@ interface RequestDTO {
     tipo_servico: string;
     nome: string;
     preco: number;
+    id_clinica: string;
 }
 
 class ServicoService {
@@ -19,12 +20,14 @@ class ServicoService {
         tipo_servico,
         nome,
         preco,
+        id_clinica
     }: RequestDTO): Promise<Servicos> {
 
         const servico = this.servicoRepository.create({
             tipo_servico,
             nome,
-            preco
+            preco,
+            id_clinica
         });
 
         await this.servicoRepository.save(servico);

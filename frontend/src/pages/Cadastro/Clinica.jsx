@@ -14,7 +14,7 @@ import {
     cadastrarRequestClinica, 
     deletarClinica, 
     listaPorId, 
-    listarTodosRequest 
+    listarTodosClinicaRequest
 } from '../../store/Clinicas/action';
 
 function CadastroClinicas(props) {
@@ -26,7 +26,7 @@ function CadastroClinicas(props) {
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
 
     useEffect(() => {
-        dispatch(listarTodosRequest());
+        dispatch(listarTodosClinicaRequest());
     }, [])
 
     const carregaInformacoesDaClinica = (id) => {

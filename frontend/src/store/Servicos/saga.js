@@ -1,26 +1,27 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
-import { cadastrarSuccess, listaPorIdSuccess, listarTodosSuccess } from './action';
+import { cadastrarSuccess, limparDadosServico, listaPorIdSuccess, listarTodosSuccess } from './action';
 import { CADASTRO_REQUEST, DELETAR_REQUEST, LISTAR_POR_ID_REQUEST, LISTAR_TODOS_REQUEST } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
 
 
 function* cadastrar(action) {
-
   try {
     
-    const { nome, preco, tipo_servico } = action.payload.dadosCadastrais;
+    const { nome, preco, tipo_servico, id_clinica } = action.payload.dadosCadastrais;
 
     const servico = {
       nome, 
       preco, 
       tipo_servico: tipo_servico.name,
+      id_clinica: id_clinica.id
     }
 
     yield api.post('/servicos', servico);
 
     yield put(cadastrarSuccess(servico));
     yield call(listarTodos);
+    yield put(limparDadosServico())
 
     toastr.success('Sucesso', 'Cadastro Realizado com sucesso!');
 

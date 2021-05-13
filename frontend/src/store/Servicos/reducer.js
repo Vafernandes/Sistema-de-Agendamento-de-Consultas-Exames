@@ -1,4 +1,4 @@
-import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS, CADASTRO_SUCCESS } from "./types";
+import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS, CADASTRO_SUCCESS, LIMPAR_DADOS_SERVICO } from "./types";
 
 const INITIAL_STATE = {
     dadosCadastrais: {},
@@ -26,6 +26,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 servico: action.payload.obj
+            }
+        case LIMPAR_DADOS_SERVICO:
+            return {
+                ...state,
+                servico: {},
             }
         default:
             return state
