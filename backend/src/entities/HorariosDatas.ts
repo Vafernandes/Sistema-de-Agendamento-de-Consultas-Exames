@@ -1,0 +1,5 @@
+class HorariosDatas {
+    
+}
+
+export { HorariosDatas }

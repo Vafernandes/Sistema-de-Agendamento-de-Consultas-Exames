@@ -55,6 +55,7 @@ function* deletar(action) {
 }
 
 function* carregarInformacoes(action) {
+  console.log(action.payload.id)
   
   try {
     const servico = action.payload.id;

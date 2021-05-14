@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
-import { Dialog } from 'primereact/dialog';
 import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.scss'
 
@@ -52,97 +51,109 @@ export default function Medicos() {
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
-            <h1>Cadastro de Médicos</h1>
+            {
+                ativarCadastro ?
 
-            <Card style={{ marginBottom: '20px' }}>
-                <Botoes botoes={[
-                    { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
-                    { nome: 'Editar', tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
-                    { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
-                ]} />
-            </Card>
+                    <div className={styles.cadastroServicoContainer}>
+                        <div className={styles.formulario}>
+                            <Form
+                                onSubmit={dados => console.log(dados)}
+                                render={({ handleSubmit }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <h2>Dados pessoais</h2>
 
-            <Card>
-                <Tabela
-                    lista={medicos}
-                    elementoSelecionado={elementoSelecionado}
-                    setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
-                    id='nome'
-                    colunas={[
-                        { coluna: 'nome', nomeColuna: 'Nome' },
-                        { coluna: 'crm', nomeColuna: 'CRM' }
-                    ]}
-                />
-            </Card>
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="nomeMedico"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <label>Nome do Médico(a)</label>
+                                                        <InputText {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
 
-            <Dialog header="Cadastro de médicos" visible={ativarCadastro} onHide={() => setAtivarCadastro(false)} breakpoints={{ '960px': '75vw' }} style={{ width: '50vw' }} footer={renderFooter}>
-                <div className={styles.cadastroServicoContainer}>
-                    <div style={{ width: '100%' }}>
-                        <Form
-                            onSubmit={dados => console.log(dados)}
-                            render={({ handleSubmit }) => (
-                                <form onSubmit={handleSubmit}>
-                                    <h2>Dados pessoais</h2>
-
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="nomeMedico"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>Nome do Médico(a)</label>
-                                                    <InputText {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
-
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="crm"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>CRM</label>
-                                                    <InputText {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="crm"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <label>CRM</label>
+                                                        <InputText {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
 
 
-                                    <h3>Horários de atendimento</h3>
+                                        <h3>Horários de atendimento</h3>
 
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="hora"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <SelectButton options={paymentOptions} optionLabel="name" multiple {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
-                                    <div className={styles.inputStyles}>
-                                        <Field
-                                            name="dataHora"
-                                            render={({ input }) => (
-                                                <span className="p-d-flex p-flex-column">
-                                                    <label>Datas de atendimento</label>
-                                                    <Calendar {...input} />
-                                                </span>
-                                            )}
-                                        />
-                                    </div>
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="hora"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <SelectButton options={paymentOptions} optionLabel="name" multiple {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="dataHora"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <label>Datas de atendimento</label>
+                                                        <Calendar dateFormat="dd/mm/yy" selectionMode="multiple" {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
 
-                                    <Botoes botoes={[
-                                        { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check' }
-                                    ]} />
-                                </form>
-                            )}
-                        />
+                                        <div className={styles.butaoFormulario}>
+                                            <Botoes botoes={[
+                                                { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
+                                            ]} />
+                                        </div>
 
+                                    </form>
+                                )}
+                            />
+                            <Botoes botoes={[
+                                { nome: 'Voltar', tipo: 'outlined', icone: 'pi-arrow-left', submit: 'submit', func: () => { setAtivarCadastro(false) } }
+                            ]} />
+                        </div>
                     </div>
-                </div>
-            </Dialog>
+
+                    :
+
+                    <div>
+                        <h1>Cadastro de Médicos</h1>
+
+                        <Card style={{ marginBottom: '20px' }}>
+                            <Botoes botoes={[
+                                { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
+                                { nome: 'Editar', tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
+                                { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
+                            ]} />
+                        </Card>
+
+                        <Card>
+                            <Tabela
+                                lista={medicos}
+                                elementoSelecionado={elementoSelecionado}
+                                setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
+                                id='nome'
+                                colunas={[
+                                    { coluna: 'nome', nomeColuna: 'Nome' },
+                                    { coluna: 'crm', nomeColuna: 'CRM' }
+                                ]}
+                            />
+                        </Card>
+                    </div>
+            }
+
         </div >
     )
 }
