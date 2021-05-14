@@ -12,6 +12,12 @@ class Medico {
     @Column()
     crm: string;
 
+    @Column()
+    datas_atendimento: string;
+
+    @Column()
+    horarios_atendimento: string;
+
     @CreateDateColumn()
     created_at: Date;
 

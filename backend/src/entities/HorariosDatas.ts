@@ -1,5 +1,0 @@
-class HorariosDatas {
-    
-}
-
-export { HorariosDatas }

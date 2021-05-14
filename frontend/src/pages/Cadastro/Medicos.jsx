@@ -7,8 +7,12 @@ import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { cadastrarMedicoRequest } from '../../store/Medicos/action';
 
 export default function Medicos() {
+    const state = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
@@ -57,14 +61,14 @@ export default function Medicos() {
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
                             <Form
-                                onSubmit={dados => console.log(dados)}
+                                onSubmit={dadosCadastrais => dispatch(cadastrarMedicoRequest(dadosCadastrais))}
                                 render={({ handleSubmit }) => (
                                     <form onSubmit={handleSubmit}>
                                         <h2>Dados pessoais</h2>
 
                                         <div className={styles.inputStyles}>
                                             <Field
-                                                name="nomeMedico"
+                                                name="nome"
                                                 render={({ input }) => (
                                                     <span className="p-d-flex p-flex-column">
                                                         <label>Nome do Médico(a)</label>
@@ -91,7 +95,7 @@ export default function Medicos() {
 
                                         <div className={styles.inputStyles}>
                                             <Field
-                                                name="hora"
+                                                name="horarios_atendimento"
                                                 render={({ input }) => (
                                                     <span className="p-d-flex p-flex-column">
                                                         <SelectButton options={paymentOptions} optionLabel="name" multiple {...input} />
@@ -101,7 +105,7 @@ export default function Medicos() {
                                         </div>
                                         <div className={styles.inputStyles}>
                                             <Field
-                                                name="dataHora"
+                                                name="datas_atendimento"
                                                 render={({ input }) => (
                                                     <span className="p-d-flex p-flex-column">
                                                         <label>Datas de atendimento</label>
