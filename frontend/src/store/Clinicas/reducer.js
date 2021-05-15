@@ -33,6 +33,7 @@ export default (state = INITIAL_STATE, action) => {
                 listaDeClinicas: action.payload.listaDeClinicas,
             }
         case LISTAR_CLINICAS_POR_ID_SUCCESS:
+            console.log(action.payload.obj)
             return {
                 ...state,
                 clinica: {

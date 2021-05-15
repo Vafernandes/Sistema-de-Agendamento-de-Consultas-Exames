@@ -1,4 +1,4 @@
-import { CADASTRAR_MEDICO_SUCCESS } from "./types"
+import { CADASTRAR_MEDICO_SUCCESS, LISTAR_TODOS_MEDICOS_SUCCESS } from "./types"
 
 const INITIAL_STATE = {
     medico: {},
@@ -11,6 +11,11 @@ export default function medico(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 medico: action.payload.dadosCadastrais,
+            }
+        case LISTAR_TODOS_MEDICOS_SUCCESS:
+            return {
+                ...state,
+                listaMedicos: action.payload.listaMedicos
             }
         default:
             return state

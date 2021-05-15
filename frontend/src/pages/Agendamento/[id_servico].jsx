@@ -1,19 +1,37 @@
-import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addLocale } from 'primereact/api';
 import { api } from '../../service/api';
-import { SelectButton } from 'primereact/selectbutton';
 import EnderecosCards from '../../components/EnderecosCards';
-import { ListBox } from 'primereact/listbox';
 import { useRouter } from 'next/router'
 import Botoes from '../../components/Botoes';
+import { useDispatch, useSelector } from 'react-redux';
+import { listarClinicaPorIdAgendamento } from '../../store/Clinicas/action';
+import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
+import { Dialog } from 'primereact/dialog';
+import { InputMask } from 'primereact/inputmask';
+import { InputText } from 'primereact/inputtext';
+
 
 
 export default function Agendamento(props) {
+    const state = useSelector(state => state)
+    const dispatch = useDispatch()
+
     const [dataAgendamento, setDataAgendamento] = useState(null);
-    const [selectedGroupedCity, setSelectedGroupedCity] = useState(null);
     const nextRouter = useRouter()
+
+    const [horario, setHorario] = useState('');
+    const [endereco, setEndereco] = useState('');
+
+    const [displayResponsive, setDisplayResponsive] = useState(false);
+
+
+    useEffect(() => {
+        dispatch(listarClinicaPorIdAgendamento(props.servico.id_clinica))
+    }, []);
+
 
     const handleAgendamento = (e) => {
         e.preventDefault()
@@ -28,45 +46,6 @@ export default function Agendamento(props) {
 
     }
 
-    const groupedItemTemplate = (option) => {
-        return (
-            <div className="p-d-flex p-ai-center country-item">
-                <img alt={option.name} src="showcase/demo/images/flag_placeholder.png" onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} className={`flag flag-${option.code.toLowerCase()}`} />
-                <div>{option.label}</div>
-            </div>
-        );
-    }
-
-    const groupedCities = [
-        {
-            label: 'Germany', code: 'DE',
-            items: [
-                { label: 'Berlin', value: 'Berlin' },
-                { label: 'Frankfurt', value: 'Frankfurt' },
-                { label: 'Hamburg', value: 'Hamburg' },
-                { label: 'Munich', value: 'Munich' }
-            ]
-        },
-        {
-            label: 'USA', code: 'US',
-            items: [
-                { label: 'Chicago', value: 'Chicago' },
-                { label: 'Los Angeles', value: 'Los Angeles' },
-                { label: 'New York', value: 'New York' },
-                { label: 'San Francisco', value: 'San Francisco' }
-            ]
-        },
-        {
-            label: 'Japan', code: 'JP',
-            items: [
-                { label: 'Kyoto', value: 'Kyoto' },
-                { label: 'Osaka', value: 'Osaka' },
-                { label: 'Tokyo', value: 'Tokyo' },
-                { label: 'Yokohama', value: 'Yokohama' }
-            ]
-        }
-    ];
-
     addLocale('pt', {
         firstDayOfWeek: 1,
         dayNames: ['domingo', 'sgunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
@@ -78,45 +57,89 @@ export default function Agendamento(props) {
         clear: 'Claro'
     });
 
+    const cities = [
+        { name: '08:30', code: '1' },
+        { name: '10:00', code: '2' },
+        { name: '11:30', code: '3' },
+        { name: '13:00', code: '4' },
+        { name: '14:00', code: '5' }
+    ];
+
+    const enderecos = [
+        { local: `${state.clinica.clinica.nome}`, rua: `${state.clinica.clinica.logradouro}`, numero: `${state.clinica.clinica.numero}` }
+    ]
+
+    console.log(horario)
+
     return (
         <div className="p-d-flex p-flex-column" >
 
             <div className="p-d-flex p-as-center p-flex-column" style={{ padding: '10px' }}>
                 <div className="p-mr-2 p-as-center">
-                    <h1>{props.servico.nome}</h1>
+                    <h1 style={{ margin: '15px 0 15px' }}>{props.servico.nome}</h1>
                 </div>
             </div>
-            <form onSubmit={handleAgendamento}>
-                <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
-                    <div className="p-mr-6">
-                        <h4>Escolha a clínica</h4>
+
+            <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
+
+                <div className="p-d-flex p-flex-column p-mr-6" style={{ width: '20rem' }}>
+                    <h4>Selecione um horário</h4>
+
+                    <Dropdown style={{ margin: '20px 0 20px' }} value={horario} options={cities} onChange={e => setHorario(e.target.value)} optionLabel="name" placeholder="Horários" />
+
+                    <Dropdown value={endereco} options={enderecos} onChange={e => setEndereco(e.target.value)} optionLabel="local" placeholder="Endereços" />
+                </div>
+                <div className="p-mr-6">
+                    <h4>Selecione uma data</h4>
+                    <Calendar
+                        style={{ margin: '20px 0 20px' }}
+                        id="disableddays"
+                        inline dateFormat="dd/mm/yy"
+                        value={dataAgendamento}
+                        onChange={(e) => setDataAgendamento(e.value)}
+                        locale="pt"
+                        dateFormat="dd/mm/yy"
+                        disabledDays={[1, 0]}
+                        readOnlyInput
+                    />
+                </div>
+                {/* <div className="p-mr-6">
+                        <h4>Clínicas disponíveis</h4>
 
                         <EnderecosCards enderecosCards={[
-                            { local: 'Clina RioMar - Fortaleza', rua: 'Rua Desembargador', numero: '500' },
+                            { local: `${state.clinica.clinica.nome}`, rua: `${state.clinica.clinica.logradouro}`, numero: `${state.clinica.clinica.numero}` },
                         ]} />
 
-                        <ListBox value={selectedGroupedCity} options={groupedCities} onChange={(e) => setSelectedGroupedCity(e.value)} optionLabel="label" optionGroupLabel="label" optionGroupChildren="items"
-                            optionGroupTemplate={groupedItemTemplate} style={{ width: '20rem' }} listStyle={{ maxHeight: '250px' }} />
-
-                    </div>
-                    <div className="p-mr-6">
-                        <h4>Escolha uma data</h4>
-                        <Calendar inline dateFormat="dd/mm/yy" showTime  value={dataAgendamento} onChange={(e) => setDataAgendamento(e.value)} locale="pt" dateFormat="dd/mm/yy" />
-                    </div>
-                    <div className="p-mr-6">
-                        <h4>Escolha um horário</h4>
-
-                        <Card title="10:00 - 11:00" style={{ height: '60px', width: '15rem', marginBottom: '2em' }} />
-                        <Card title="10:00 - 11:00" style={{ height: '60px', width: '15rem', marginBottom: '2em' }} />
-                        <Card title="10:00 - 11:00" style={{ height: '60px', width: '15rem', marginBottom: '2em' }} />
-                        <Card title="10:00 - 11:00" style={{ height: '60px', width: '15rem', marginBottom: '2em' }} />
-
-                    </div>
+                    </div> */}
+            </div>
+            <div className="p-d-flex p-as-center p-flex-column" style={{ padding: '10px' }}>
+                <div className="p-mr-2 p-as-center">
+                    <Botoes botoes={[
+                        { nome: 'Continuar', tipo: 'info', func: () => { setDisplayResponsive(true) }, submit: 'submit' }
+                    ]} />
                 </div>
-                <Botoes botoes={[
-                    { nome: 'Agendar', tipo: 'success', icone: 'pi-check', func: () => { }, submit: 'submit' }
-                ]} />
-            </form>
+            </div>
+
+            <Dialog header="Confirmar agendamento" visible={displayResponsive} onHide={() => setDisplayResponsive(false)} breakpoints={{ '960px': '75vw' }} style={{ width: '50vw' }}>
+                <form>
+
+                    <div className="p-d-flex p-flex-column p-mr-6">
+                        <Calendar value={dataAgendamento} dateFormat="dd/mm/yy" readOnly showIcon />
+                        <InputMask mask="99:99" value={horario.name} readOnly />
+                    </div>
+
+                    <div className="p-d-flex p-flex-column p-mr-6">
+
+                        <InputText value={endereco.local} readOnly />
+                    </div>
+
+                    <div>
+                        <Botoes botoes={[
+                            { nome: 'Confirmar Agendamento', tipo: 'submit', func: () => {}, submit: 'submit' }
+                        ]} />
+                    </div>
+                </form>
+            </Dialog>
         </div>
     )
 }

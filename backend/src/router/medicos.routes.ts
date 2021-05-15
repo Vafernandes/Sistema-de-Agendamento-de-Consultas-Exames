@@ -18,4 +18,17 @@ medicosRouter.post('/', async (request, response) => {
 
 })
 
+medicosRouter.get('/', async (request, response) => {
+    try {
+        
+        const medicoService = new MedicoService();
+
+        const medicos = await medicoService.listarTodosMedicos()
+
+        return response.status(200).json(medicos)
+    } catch (error) {
+        return response.status(400).json({ error: error.message })
+    }
+})
+
 export { medicosRouter }

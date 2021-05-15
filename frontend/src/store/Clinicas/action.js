@@ -8,7 +8,8 @@ import {
     LISTAR_CLINICAS_POR_ID_REQUEST,
     LISTAR_CLINICAS_POR_ID_SUCCESS,
     LISTAR_TODAS_CLINICAS_REQUEST,
-    LISTAR_TODAS_CLINICAS_SUCCESS
+    LISTAR_TODAS_CLINICAS_SUCCESS,
+    LISTA_CLINICA_POR_ID_AGENDAMENTO
 } from "./types";
 
 export function cadastrarRequestClinica(dadosCadastrais) {
@@ -45,14 +46,23 @@ export function deletarClinica(id) {
     }
 }
 
-export function listaPorId(id) {
+export function listaClinicaPorId(id) {
+    console.log(id)
     return {
         type: LISTAR_CLINICAS_POR_ID_REQUEST,
         payload: { id }
     }
 }
 
-export function listaPorIdSuccess(obj) {
+export function listarClinicaPorIdAgendamento(id) {
+    console.log(id)
+    return {
+        type: LISTA_CLINICA_POR_ID_AGENDAMENTO,
+        payload: { id }
+    }
+}
+
+export function listaClinicaPorIdSuccess(obj) {
     return {
         type: LISTAR_CLINICAS_POR_ID_SUCCESS,
         payload: { obj }

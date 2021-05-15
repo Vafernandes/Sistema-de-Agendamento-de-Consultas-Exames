@@ -1,14 +1,14 @@
 import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastrarMedicoRequest } from '../../store/Medicos/action';
+import { cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
 
 export default function Medicos() {
     const state = useSelector(state => state);
@@ -17,11 +17,11 @@ export default function Medicos() {
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
 
-    const medicos = [
-        { nome: 'Fulano', crm: '1234564' },
-        { nome: 'Beltrano', crm: '1234564' },
-        { nome: 'Ciclano', crm: '1234564' },
-    ]
+    useEffect(() => {
+        dispatch(listarTodosMedicosRequest())
+    }, [])
+
+    console.log(state.medico)
 
     const paymentOptions = [
         { name: '07:30', value: 1 },
@@ -145,7 +145,7 @@ export default function Medicos() {
 
                         <Card>
                             <Tabela
-                                lista={medicos}
+                                lista={state.medico.listaMedicos}
                                 elementoSelecionado={elementoSelecionado}
                                 setElementoSelecionado={(e) => setElementoSelecionado(e.value)}
                                 id='nome'

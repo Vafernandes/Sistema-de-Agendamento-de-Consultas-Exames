@@ -3,7 +3,7 @@ import {
   atualizaClinicaSuccess, 
   cadastrarSuccessClinica, 
   limparDadosDaClinica, 
-  listaPorIdSuccess, 
+  listaClinicaPorIdSuccess, 
   listarTodosClinicaSuccess 
 } from './action';
 import {
@@ -11,7 +11,8 @@ import {
   CADASTRO_CLINICA_REQUEST,
   DELETAR_CLINICAS_REQUEST,
   LISTAR_CLINICAS_POR_ID_REQUEST,
-  LISTAR_TODAS_CLINICAS_REQUEST
+  LISTAR_TODAS_CLINICAS_REQUEST,
+  LISTA_CLINICA_POR_ID_AGENDAMENTO
 } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
@@ -73,8 +74,8 @@ function* deletar(action) {
 function* carregarInformacoes(action) {
   try {
     const clinica = action.payload.id;
-
-    yield put(listaPorIdSuccess(clinica))
+    
+    yield put(listaClinicaPorIdSuccess(clinica))
   } catch (error) {
     toastr.error('Erro', `${error.message}`);
   }
@@ -116,10 +117,24 @@ function* atualizarClinica(action) {
   }
 }
 
+function* listarPorIdAgendamento(action) {
+  try {
+    const id = action.payload.id;
+
+    const response = yield api.get(`/clinicas/${id}`);
+    
+    yield put(listaClinicaPorIdSuccess(response.data))
+  } catch (error) {
+    toastr.error('Erro', `${error.message}`);
+  }
+}
+
+
 export default all([
   takeLatest(CADASTRO_CLINICA_REQUEST, cadastrar),
   takeLatest(LISTAR_TODAS_CLINICAS_REQUEST, listarTodasClinicas),
   takeLatest(DELETAR_CLINICAS_REQUEST, deletar),
   takeLatest(LISTAR_CLINICAS_POR_ID_REQUEST, carregarInformacoes),
-  takeLatest(ATUALIZA_CLINICA_REQUEST, atualizarClinica)
+  takeLatest(ATUALIZA_CLINICA_REQUEST, atualizarClinica),
+  takeLatest(LISTA_CLINICA_POR_ID_AGENDAMENTO, listarPorIdAgendamento)
 ])

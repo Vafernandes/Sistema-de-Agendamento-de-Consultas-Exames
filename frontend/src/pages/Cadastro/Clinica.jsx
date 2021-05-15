@@ -13,7 +13,7 @@ import {
     atualizaClinicaRequest, 
     cadastrarRequestClinica, 
     deletarClinica, 
-    listaPorId, 
+    listaClinicaPorId,
     listarTodosClinicaRequest
 } from '../../store/Clinicas/action';
 
@@ -30,7 +30,7 @@ function CadastroClinicas(props) {
     }, [])
 
     const carregaInformacoesDaClinica = (id) => {
-        dispatch(listaPorId(id));
+        dispatch(listaClinicaPorId(id));
 
         setAtivarCadastro(true);
     }

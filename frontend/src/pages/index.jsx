@@ -9,7 +9,7 @@ export default function SidebarDemo() {
                 marginTop: '50px', marginBottom: '30px', padding: '30px'
             }}>
                 <div className="p-mr-2 p-as-center">
-                    <h1>Faça seu agendmanento agora!</h1>
+                    <h1>Faça seu agendamento agora!</h1>
                 </div>
                 <div className="p-mr-2 p-as-center">
                     <h4>Escolha abaixo o atendimento que você precisa para começar seu agendamento</h4>
