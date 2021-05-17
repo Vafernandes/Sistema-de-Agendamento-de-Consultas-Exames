@@ -6,7 +6,7 @@ import EnderecosCards from '../../components/EnderecosCards';
 import { useRouter } from 'next/router'
 import Botoes from '../../components/Botoes';
 import { useDispatch, useSelector } from 'react-redux';
-import { listarClinicaPorIdAgendamento } from '../../store/Clinicas/action';
+import { listarClinicaPorIdAgendamento } from '../../store/Servicos/action';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
@@ -27,9 +27,8 @@ export default function Agendamento(props) {
 
     const [displayResponsive, setDisplayResponsive] = useState(false);
 
-
     useEffect(() => {
-        dispatch(listarClinicaPorIdAgendamento(props.servico.id_clinica))
+        dispatch(listarClinicaPorIdAgendamento(props.servico.id))
     }, []);
 
 

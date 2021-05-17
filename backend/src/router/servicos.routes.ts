@@ -83,17 +83,17 @@ servicoRouter.delete('/deletarServico/:id', async (request, response) => {
     }
 })
 
-servicoRouter.get('/listarClinicas', async (request, response) => {
+servicoRouter.get('/listar/clinicasServico/:id', async (request, response) => {
     try {
-
+        const {id} = request.params
         const servicoService = new ServicoService();
-        const servicos = await servicoService.listarClinicasDosServicos();
 
-        return response.status(200).json(servicos);
+        const clinicasServico = await servicoService.listarClinicasDosServicos(id)
+
+        return response.status(200).json(clinicasServico) 
     } catch (error) {
         return response.status(400).json({ error: error.message });
     }
 })
-
 
 export { servicoRouter }

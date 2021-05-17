@@ -54,14 +54,6 @@ export function listaClinicaPorId(id) {
     }
 }
 
-export function listarClinicaPorIdAgendamento(id) {
-    console.log(id)
-    return {
-        type: LISTA_CLINICA_POR_ID_AGENDAMENTO,
-        payload: { id }
-    }
-}
-
 export function listaClinicaPorIdSuccess(obj) {
     return {
         type: LISTAR_CLINICAS_POR_ID_SUCCESS,

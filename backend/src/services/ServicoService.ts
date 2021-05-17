@@ -70,10 +70,15 @@ class ServicoService {
         await this.servicoRepository.delete(id);
     }
 
-    public async listarClinicasDosServicos(): Promise<Servicos[]> {
-        const servicos = await this.servicoRepository.find({ relations: ['clinica'] });
-        
-        return servicos;
+    public async listarClinicasDosServicos(id: string) {
+        const clinicasServicos = await this.servicoRepository.find({ relations: ['clinicas'] });
+        let clinicas: Clinica[] = []
+        for (const servico of clinicasServicos) {
+            if(servico.id === id)
+            clinicas = servico.clinicas
+        }
+
+        return clinicas;
     }
 }
 

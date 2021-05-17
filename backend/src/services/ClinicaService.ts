@@ -77,12 +77,6 @@ class ClinicaService {
         return clinicas;
     }
 
-    public async listarServicosDaClinica(): Promise<Clinica[]> {
-        const clinica = await this.clinicaRepository.find({ relations: ['servicos'] });
-
-        return clinica;
-    }
-
     public async deletarClinica(id: string) {
         await this.buscaClinicaPorId(id);
 

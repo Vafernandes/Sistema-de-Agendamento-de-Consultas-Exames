@@ -7,7 +7,8 @@ import {
     LISTAR_POR_ID_SUCCESS,
     CADASTRO_REQUEST,
     CADASTRO_SUCCESS,
-    LIMPAR_DADOS_SERVICO
+    LIMPAR_DADOS_SERVICO,
+    LISTA_CLINICA_POR_ID_AGENDAMENTO
 } from "./types";
 
 export function cadastrarRequest(dadosCadastrais) {
@@ -68,5 +69,13 @@ export function listaPorIdSuccess(obj) {
 export function limparDadosServico() {
     return {
         type: LIMPAR_DADOS_SERVICO
+    }
+}
+
+export function listarClinicaPorIdAgendamento(id) {
+    console.log(id)
+    return {
+        type: LISTA_CLINICA_POR_ID_AGENDAMENTO,
+        payload: { id }
     }
 }

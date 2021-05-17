@@ -1,12 +1,11 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 import { cadastrarSuccess, limparDadosServico, listaPorIdSuccess, listarTodosSuccess } from './action';
-import { CADASTRO_REQUEST, DELETAR_REQUEST, LISTAR_POR_ID_REQUEST, LISTAR_TODOS_REQUEST } from './types';
+import { CADASTRO_REQUEST, DELETAR_REQUEST, LISTAR_POR_ID_REQUEST, LISTAR_TODOS_REQUEST, LISTA_CLINICA_POR_ID_AGENDAMENTO } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
 
 
 function* cadastrar(action) {
-  console.log(action.payload.dadosCadastrais)
   try {
     
     const { nome, preco, tipo_servico, clinicas } = action.payload.dadosCadastrais;
@@ -67,9 +66,24 @@ function* carregarInformacoes(action) {
   }
 }
 
+function* listarPorIdAgendamento(action) {
+  console.log(action.payload.id)
+  try {
+    const id = action.payload.id;
+
+    const response = yield api.get(`/servicos/listar/clinicasServico/${id}`);
+
+    yield put(listaClinicaPorIdSuccess(response.data))
+  } catch (error) {
+    toastr.error('Erro', `${error.message}`);
+  }
+}
+
+
 export default all([
   takeLatest(CADASTRO_REQUEST, cadastrar),
   takeLatest(LISTAR_TODOS_REQUEST, listarTodos),
   takeLatest(DELETAR_REQUEST, deletar),
-  takeLatest(LISTAR_POR_ID_REQUEST, carregarInformacoes)
+  takeLatest(LISTAR_POR_ID_REQUEST, carregarInformacoes),
+  takeLatest(LISTA_CLINICA_POR_ID_AGENDAMENTO, listarPorIdAgendamento)
 ])
