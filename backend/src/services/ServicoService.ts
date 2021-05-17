@@ -1,11 +1,12 @@
 import { getRepository, Repository } from "typeorm";
+import { Clinica } from "../entities/Clinica";
 import { Servicos } from "../entities/Servicos";
 
 interface RequestDTO {
     tipo_servico: string;
     nome: string;
     preco: number;
-    id_clinica: string;
+    clinicas: Clinica[]
 }
 
 class ServicoService {
@@ -20,17 +21,18 @@ class ServicoService {
         tipo_servico,
         nome,
         preco,
-        id_clinica
+        clinicas
     }: RequestDTO): Promise<Servicos> {
+        //let servico = new Servicos();
 
         const servico = this.servicoRepository.create({
             tipo_servico,
             nome,
             preco,
-            id_clinica
+            clinicas: clinicas
         });
 
-        await this.servicoRepository.save(servico);
+        await this.servicoRepository.manager.save(servico);
 
         return servico;
     }
@@ -73,7 +75,6 @@ class ServicoService {
         
         return servicos;
     }
-
 }
 
 export { ServicoService }

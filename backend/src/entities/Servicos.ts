@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Clinica } from "./Clinica";
 
 @Entity('servicos')
@@ -16,12 +16,9 @@ class Servicos {
     @Column()
     preco: number;
 
-    @Column({ nullable: true })
-    id_clinica: string;
-
-    @ManyToOne(() => Clinica, clinica => clinica.servicos)
-    @JoinColumn({ name: 'id_clinica' })
-    clinica: Clinica;
+    @ManyToMany(() => Clinica)
+    @JoinTable({ name: 'servicos_clinicas' })
+    clinicas: Clinica[];
 
     @CreateDateColumn()
     created_at: Date;

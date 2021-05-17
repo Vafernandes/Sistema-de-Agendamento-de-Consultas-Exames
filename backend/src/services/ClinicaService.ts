@@ -1,7 +1,6 @@
 import { getRepository, Repository } from "typeorm";
 import { Clinica } from "../entities/Clinica";
 import { Endereco } from "../entities/Endereco";
-import { ServicoService } from "./ServicoService";
 
 interface PostClinicaRequestDTO {
     nome: string;
@@ -10,13 +9,6 @@ interface PostClinicaRequestDTO {
     complemento: string;
     bairro: string;
     cep: string;
-}
-
-interface PostServicoRequestDTO {
-    id: string;
-    tipo_servico: string;
-    nome: string;
-    preco: number;
 }
 
 interface AtualizarClinicaRequestDTO {
@@ -77,24 +69,6 @@ class ClinicaService {
         }
 
         return clinicaExiste
-    }
-
-    public async adicionaServicoNaClinica({ id, tipo_servico, nome, preco }: PostServicoRequestDTO) {
-        const clinicaExiste = await this.buscaClinicaPorId(id);
-
-        // const servicoService = new ServicoService();
-
-        // const servico = await servicoService.execute({
-        //     tipo_servico, 
-        //     nome, 
-        //     preco
-        // });
-
-        // clinicaExiste.servicos = [servico];
-
-        // await this.clinicaRepository.manager.save(clinicaExiste);
-
-        // return clinicaExiste;
     }
 
     public async listarTodasClinicas(): Promise<Clinica[]> {

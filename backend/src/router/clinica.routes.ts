@@ -45,26 +45,6 @@ clinicaRouter.get('/:id', async (request, response) => {
     }
 })
 
-clinicaRouter.put('/adicionarServico/:id', async (request, response) => {
-    try {
-        const { id } = request.params;
-        const { tipo_servico, nome, preco } = request.body;
-
-        const clinicaService = new ClinicaService();
-
-        const clinica = await clinicaService.adicionaServicoNaClinica({
-            id,
-            tipo_servico,
-            nome,
-            preco
-        })
-
-        return response.status(200).json(clinica); 
-    } catch (error) {
-        return response.status(400).json({ error: error.message });
-    }
-});
-
 clinicaRouter.get('/', async (request, response) => {
     try {
         const clinicaService = new ClinicaService();

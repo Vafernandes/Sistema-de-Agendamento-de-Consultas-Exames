@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Endereco } from "./Endereco";
 import { Servicos } from "./Servicos";
 
@@ -13,9 +13,6 @@ class Clinica {
 
     @Column(type => Endereco)
     endereco: Endereco;
-
-    @OneToMany(() => Servicos, servico => servico.clinica)
-    servicos: Servicos[];
 
     @CreateDateColumn()
     created_at: Date;

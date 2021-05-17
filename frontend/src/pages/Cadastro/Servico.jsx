@@ -1,6 +1,8 @@
 import { Form, Field } from 'react-final-form'
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
+import {Checkbox} from 'primereact/checkbox';
+import { MultiSelect } from 'primereact/multiselect';
 
 import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,7 @@ function CadastroServico(props) {
     const state = useSelector(state => state);
     const dispatch = useDispatch();
 
+    const [selecionaClinica, setSelecionaClinica] = useState(null);
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
 
@@ -49,7 +52,7 @@ function CadastroServico(props) {
 
         setAtivarCadastro(false);
     }
-
+    
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
 
@@ -69,11 +72,21 @@ function CadastroServico(props) {
 
                                                 <div className={styles.inputStyles}>
                                                     <Field
-                                                        name="id_clinica"
+                                                        name="clinicas"
                                                         render={({ input }) => (
                                                             <span className="p-d-flex p-flex-column">
                                                                 <label>Selecione a Clínica para adicionar o serviço</label>
-                                                                <Dropdown options={state.clinica.listaDeClinicas} optionLabel="nome" placeholder="Selecione a clínica" {...input} />
+                                                                <MultiSelect 
+                                                                    value={selecionaClinica} 
+                                                                    options={state.clinica.listaDeClinicas} 
+                                                                    onChange={(e) => setSelecionaClinica(e.value)} 
+                                                                    optionLabel="nome" 
+                                                                    placeholder="Selecione a(s) clínica(s)" 
+                                                                    {...input}
+                                                                />
+
+                                                               
+                                                                 {/* <Dropdown options={state.clinica.listaDeClinicas} optionLabel="nome" placeholder="Selecione a clínica" {...input} /> */}
                                                             </span>
                                                         )}
                                                     />
@@ -157,7 +170,6 @@ function CadastroServico(props) {
                                     { coluna: 'tipo_servico', nomeColuna: 'Tipo de serviço' },
                                     { coluna: 'nome', nomeColuna: 'Nome' },
                                     { coluna: 'preco', nomeColuna: 'Preço' },
-                                    { coluna: 'id_clinica', nomeColuna: 'Codigo clínica' },
                                     { acao: editarExcluir }
                                 ]}
                             />

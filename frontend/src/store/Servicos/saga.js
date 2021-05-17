@@ -6,15 +6,16 @@ import { toastr } from 'react-redux-toastr';
 
 
 function* cadastrar(action) {
+  console.log(action.payload.dadosCadastrais)
   try {
     
-    const { nome, preco, tipo_servico, id_clinica } = action.payload.dadosCadastrais;
+    const { nome, preco, tipo_servico, clinicas } = action.payload.dadosCadastrais;
 
     const servico = {
       nome, 
       preco, 
       tipo_servico: tipo_servico.name,
-      id_clinica: id_clinica.id
+      clinicas
     }
 
     yield api.post('/servicos', servico);

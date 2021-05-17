@@ -9,7 +9,7 @@ servicoRouter.post('/', async (request, response) => {
             tipo_servico,
             nome,
             preco,
-            id_clinica
+            clinicas
         } = request.body;
 
         const servicoService = new ServicoService();
@@ -18,7 +18,7 @@ servicoRouter.post('/', async (request, response) => {
             tipo_servico,
             nome,
             preco,
-            id_clinica
+            clinicas
         });
 
         return response.status(201).json(servico);
@@ -94,5 +94,6 @@ servicoRouter.get('/listarClinicas', async (request, response) => {
         return response.status(400).json({ error: error.message });
     }
 })
+
 
 export { servicoRouter }
