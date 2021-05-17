@@ -60,6 +60,46 @@ export default function Medicos() {
 
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
+                        <Form
+                                onSubmit={dadosCadastrais => console.log(dadosCadastrais)}
+                                render={({ handleSubmit }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <h2>Cadastre as datas e horários</h2>
+
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="data"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <label>Data</label>
+                                                        <InputText {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
+
+                                        <div className={styles.inputStyles}>
+                                            <Field
+                                                name="hora"
+                                                render={({ input }) => (
+                                                    <span className="p-d-flex p-flex-column">
+                                                        <label>Hora</label>
+                                                        <InputText {...input} />
+                                                    </span>
+                                                )}
+                                            />
+                                        </div>
+
+                                        <div className={styles.butaoFormulario}>
+                                            <Botoes botoes={[
+                                                { nome: 'Adicionar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
+                                            ]} />
+                                        </div>
+
+                                    </form>
+                                )}
+                            />
+
                             <Form
                                 onSubmit={dadosCadastrais => dispatch(cadastrarMedicoRequest(dadosCadastrais))}
                                 render={({ handleSubmit }) => (

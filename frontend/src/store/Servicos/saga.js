@@ -1,5 +1,5 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
-import { cadastrarSuccess, limparDadosServico, listaPorIdSuccess, listarTodosSuccess } from './action';
+import { cadastrarSuccess, limparDadosServico, listaPorIdSuccess, listarClinicaPorIdAgendamentoSuccess, listarTodosSuccess } from './action';
 import { CADASTRO_REQUEST, DELETAR_REQUEST, LISTAR_POR_ID_REQUEST, LISTAR_TODOS_REQUEST, LISTA_CLINICA_POR_ID_AGENDAMENTO } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
@@ -67,13 +67,14 @@ function* carregarInformacoes(action) {
 }
 
 function* listarPorIdAgendamento(action) {
-  console.log(action.payload.id)
   try {
     const id = action.payload.id;
 
     const response = yield api.get(`/servicos/listar/clinicasServico/${id}`);
 
-    yield put(listaClinicaPorIdSuccess(response.data))
+    console.log(response.data)
+
+    yield put(listarClinicaPorIdAgendamentoSuccess(response.data))
   } catch (error) {
     toastr.error('Erro', `${error.message}`);
   }

@@ -1,9 +1,10 @@
-import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS, CADASTRO_SUCCESS, LIMPAR_DADOS_SERVICO } from "./types";
+import { LISTAR_TODOS_SUCCESS, LISTAR_TODOS_ERROR, LISTAR_POR_ID_SUCCESS, CADASTRO_SUCCESS, LIMPAR_DADOS_SERVICO, LISTA_CLINICA_POR_ID_AGENDAMENTO_SUCCESS } from "./types";
 
 const INITIAL_STATE = {
     dadosCadastrais: {},
     servico: {},
     listaDeServicos: [],
+    clinicasEnderecos: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -31,6 +32,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 servico: {},
+            }
+        case LISTA_CLINICA_POR_ID_AGENDAMENTO_SUCCESS:
+            return {
+                ...state,
+                clinicasEnderecos: action.payload.listaClinicas
             }
         default:
             return state

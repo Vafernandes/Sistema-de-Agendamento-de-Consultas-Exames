@@ -8,7 +8,8 @@ import {
     CADASTRO_REQUEST,
     CADASTRO_SUCCESS,
     LIMPAR_DADOS_SERVICO,
-    LISTA_CLINICA_POR_ID_AGENDAMENTO
+    LISTA_CLINICA_POR_ID_AGENDAMENTO,
+    LISTA_CLINICA_POR_ID_AGENDAMENTO_SUCCESS
 } from "./types";
 
 export function cadastrarRequest(dadosCadastrais) {
@@ -77,5 +78,12 @@ export function listarClinicaPorIdAgendamento(id) {
     return {
         type: LISTA_CLINICA_POR_ID_AGENDAMENTO,
         payload: { id }
+    }
+}
+
+export function listarClinicaPorIdAgendamentoSuccess(listaClinicas) {
+    return {
+        type: LISTA_CLINICA_POR_ID_AGENDAMENTO_SUCCESS,
+        payload: { listaClinicas }
     }
 }

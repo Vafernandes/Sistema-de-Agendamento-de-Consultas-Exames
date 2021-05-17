@@ -68,7 +68,7 @@ export default function Agendamento(props) {
         { local: `${state.clinica.clinica.nome}`, rua: `${state.clinica.clinica.logradouro}`, numero: `${state.clinica.clinica.numero}` }
     ]
 
-    console.log(horario)
+    console.log(state.servico.clinicasEnderecos)
 
     return (
         <div className="p-d-flex p-flex-column" >
@@ -86,7 +86,7 @@ export default function Agendamento(props) {
 
                     <Dropdown style={{ margin: '20px 0 20px' }} value={horario} options={cities} onChange={e => setHorario(e.target.value)} optionLabel="name" placeholder="Horários" />
 
-                    <Dropdown value={endereco} options={enderecos} onChange={e => setEndereco(e.target.value)} optionLabel="local" placeholder="Endereços" />
+                    <Dropdown value={endereco} options={state.servico.clinicasEnderecos} onChange={e => setEndereco(e.target.value)} optionLabel="nome" placeholder="Endereços" />
                 </div>
                 <div className="p-mr-6">
                     <h4>Selecione uma data</h4>
@@ -129,7 +129,7 @@ export default function Agendamento(props) {
 
                     <div className="p-d-flex p-flex-column p-mr-6">
 
-                        <InputText value={endereco.local} readOnly />
+                        <InputText value={endereco.nome} readOnly />
                     </div>
 
                     <div>

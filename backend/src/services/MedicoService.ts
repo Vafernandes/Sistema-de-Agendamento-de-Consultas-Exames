@@ -1,11 +1,11 @@
 import { getRepository, Repository } from "typeorm"
+import { DataHora } from "../entities/DataHora";
 import { Medico } from "../entities/Medico"
 
 interface RequestDTO {
     nome: string;
     crm: string;
-    datas_atendimento: string;
-    horarios_atendimento: string;
+    datasHorasAtendimento: DataHora[];
 }
 
 class MedicoService {
@@ -16,9 +16,9 @@ class MedicoService {
         this.medicoRepository = getRepository(Medico);
     }
 
-    public async execute({ nome, crm, datas_atendimento, horarios_atendimento }: RequestDTO): Promise<Medico> {
+    public async execute({ nome, crm, datasHorasAtendimento }: RequestDTO): Promise<Medico> {
 
-        const medico = this.medicoRepository.create({ nome, crm, datas_atendimento, horarios_atendimento });
+        const medico = this.medicoRepository.create({ nome, crm });
 
         await this.medicoRepository.save(medico);
 

@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { DataHora } from "./DataHora";
 
 @Entity('medicos')
 class Medico {
@@ -12,11 +13,8 @@ class Medico {
     @Column()
     crm: string;
 
-    @Column()
-    datas_atendimento: string;
-
-    @Column()
-    horarios_atendimento: string;
+    @OneToMany(() => DataHora, dataHora => dataHora.medico)
+    datasHorarios: DataHora;
 
     @CreateDateColumn()
     created_at: Date;

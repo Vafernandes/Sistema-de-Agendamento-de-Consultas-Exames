@@ -72,6 +72,7 @@ class ServicoService {
 
     public async listarClinicasDosServicos(id: string) {
         const clinicasServicos = await this.servicoRepository.find({ relations: ['clinicas'] });
+        
         let clinicas: Clinica[] = []
         for (const servico of clinicasServicos) {
             if(servico.id === id)
