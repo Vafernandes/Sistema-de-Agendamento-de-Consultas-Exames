@@ -15,14 +15,14 @@ class DataHoraService {
 
     public async execute({ data, hora }: DataHoraRequestDTO): Promise<DataHora> {
 
-            const dataHora = this.dataHoraRepository.create({
-                data, 
-                hora
-            });    
+        const dataHora = this.dataHoraRepository.create({
+            data,
+            hora
+        });
 
-            this.dataHoraRepository.manager.save(dataHora);
+        await this.dataHoraRepository.manager.save(dataHora);
 
-            return dataHora;
+        return dataHora;
     }
 }
 

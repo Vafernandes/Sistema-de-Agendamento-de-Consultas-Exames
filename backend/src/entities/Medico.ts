@@ -14,7 +14,7 @@ class Medico {
     crm: string;
 
     @OneToMany(() => DataHora, dataHora => dataHora.medico)
-    datasHorarios: DataHora;
+    datasHorarios: DataHora[];
 
     @CreateDateColumn()
     created_at: Date;

@@ -9,6 +9,7 @@ import { cadastrarMedicoSuccess, listarTodosMedicosSuccess } from './action';
 
 function* cadastrarDatasHorarios(action) {
     console.log(action.payload.dadosCadastrais)
+    console.log(action.payload.datasHorarios)
 
     try {
         const { hora, data } = action.payload.dadosCadastrais;
@@ -29,13 +30,19 @@ function* cadastrarDatasHorarios(action) {
 
 function* cadastrar(action) {
 
+    console.log(action.payload.dadosCadastrais)
+    console.log(action.payload.datasHorarios)
+
     try {
         const { nome, crm } = action.payload.dadosCadastrais;
 
         const medico = {
             nome,
-            crm
+            crm,
+            datasHorasCadastradas: action.payload.datasHorarios
         }
+
+        console.log(medico)
 
         yield api.post('/medicos', medico);
 

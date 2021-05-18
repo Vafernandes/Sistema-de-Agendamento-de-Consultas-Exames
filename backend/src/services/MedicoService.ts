@@ -1,9 +1,12 @@
 import { getRepository, Repository } from "typeorm"
+import { DataHora } from "../entities/DataHora";
 import { Medico } from "../entities/Medico"
+import { DataHoraService } from "./DataHoraService";
 
 interface RequestDTO {
     nome: string;
     crm: string;
+    datasHorasCadastradas: DataHora[];
 }
 
 class MedicoService {
@@ -14,11 +17,24 @@ class MedicoService {
         this.medicoRepository = getRepository(Medico);
     }
 
-    public async execute({ nome, crm }: RequestDTO): Promise<Medico> {
+    public async execute({ nome, crm, datasHorasCadastradas }: RequestDTO): Promise<Medico> {
 
-        const medico = this.medicoRepository.create({ nome, crm });
+        const dataHoraService = new DataHoraService();
+        const datasHorasObjCadastradosNoBanco: DataHora[] = [];
 
-        await this.medicoRepository.save(medico);
+        for (const dataHora of datasHorasCadastradas) {
+            const dataHoraObj = await dataHoraService.execute(dataHora);
+            
+            datasHorasObjCadastradosNoBanco.push(dataHoraObj);
+        }
+
+        const medico = this.medicoRepository.create({ 
+            nome, 
+            crm,
+            datasHorarios: datasHorasObjCadastradosNoBanco 
+        });
+
+        await this.medicoRepository.manager.save(medico);
 
         return medico;
     }

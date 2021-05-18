@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
-import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastrarDatasHorariosRequest, cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
+import { cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
 import { useRouter } from 'next/router'
 import { MultiSelect } from 'primereact/multiselect';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Dialog } from 'primereact/dialog';
 
 
 export default function Medicos() {
@@ -24,6 +24,8 @@ export default function Medicos() {
     const [horario, setHorario] = useState('');
 
     const [dadosTabelaDeHorarios, setDadosTabelaDeHorarios] = useState([])
+    const [dataHoraSelecionados, setDataHoraSelecionados] = useState('')
+    const [incluirHorarioForm, setIncluirHorarioForm] = useState(false)
 
     const router = useRouter()
 
@@ -40,65 +42,53 @@ export default function Medicos() {
     }
 
     const horarios = [
-         '07:30',
-         '08:00',
-         '08:30',
-         '09:00',
-         '09:30',
-         '10:00',
-         '10:30',
-         '11:00',
-         '11:30',
-         '12:00',
-         '12:30',
-         '13:00',
-         '13:30',
-         '14:00',
-         '14:30',
-         '15:00',
-         '15:30',
-         '16:00',
-         '16:30',
-         '17:00',
-         '17:30',
+        '07:30',
+        '08:00',
+        '08:30',
+        '09:00',
+        '09:30',
+        '10:00',
+        '10:30',
+        '11:00',
+        '11:30',
+        '12:00',
+        '12:30',
+        '13:00',
+        '13:30',
+        '14:00',
+        '14:30',
+        '15:00',
+        '15:30',
+        '16:00',
+        '16:30',
+        '17:00',
+        '17:30',
     ];
-    
-    const products = [
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
-    ]
 
     function adicionarDataHoraNaTabela(dados) {
-        const dataHorarioAdicionado = dados
+
+        dados.data.setDate(dados.data.getDate());
+
+        const dataHorarioAdicionado = {
+            data: dados.data.toLocaleDateString(),
+            hora: dados.hora.join()
+        }
+
+        console.log(dataHorarioAdicionado.data)
 
         setDadosTabelaDeHorarios([...dadosTabelaDeHorarios, dataHorarioAdicionado])
 
-        // dadosTabelaDeHorarios.map(obj => {
-        //     console.log(obj)
-        // })
+        setIncluirHorarioForm(false)
+
     }
 
-    // console.log(dadosTabelaDeHorarios.map(horariosData => {
-    //     console.log(horariosData.data)
-    // }))
+    function cadastrarMedico(dadosCadastrais) {
+        dispatch(cadastrarMedicoRequest(dadosCadastrais, dataHoraSelecionados))
 
-    console.log(dadosTabelaDeHorarios)
+        setAtivarCadastro(false)
+
+        setDadosTabelaDeHorarios([])
+    }
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
@@ -107,58 +97,33 @@ export default function Medicos() {
 
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
+
                             <Card style={{ margin: '0 0 30px 0' }}>
-                                <Form
-                                    onSubmit={adicionarDataHoraNaTabela}
-                                    render={({ handleSubmit }) => (
-                                        <form onSubmit={handleSubmit}>
+                                <h2 style={{ marginBottom: '15px' }}>Cadastrar horários</h2>
 
-                                            <h2>Cadastrar Horários</h2>
-                                            <div className={styles.containerCadastroHorario}>
-                                                <div className={styles.inputStyles}>
-                                                    <Field
-                                                        name="data"
-                                                        render={({ input }) => (
-                                                            <span className="p-d-flex p-flex-column">
-                                                                <label>Data(s)</label>
-                                                                <Calendar id="multiple" selectionMode="multiple" readOnlyInput {...input} />
-                                                            </span>
-                                                        )}
-                                                    />
-                                                </div>
+                                <Botoes botoes={[
+                                    {
+                                        nome: 'Incluir horários',
+                                        tipo: 'rounded p-button-secondary',
+                                        icone: 'pi-plus',
+                                        func: () => { setIncluirHorarioForm(true) }
+                                    }
+                                ]} />
 
-                                                <div className={styles.inputStyles}>
-                                                    <Field
-                                                        name="hora"
-                                                        render={({ input }) => (
-                                                            <span className="p-d-flex p-flex-column">
-                                                                <label>Horário(s)</label>
-                                                                <MultiSelect value={horario} options={horarios} onChange={(e) => setHorario(e.value)} {...input} />
-                                                            </span>
-                                                        )}
-                                                    />
-                                                </div>
-
-                                                <div className={styles.butaoFormulario}>
-                                                    <Botoes botoes={[
-                                                        { tipo: 'rounded p-button-success', icone: 'pi-plus', submit: 'submit' }
-                                                    ]} />
-                                                </div>
-                                            </div>
-
-                                        </form>
-                                    )}
-                                />
+                                <DataTable
+                                    value={dadosTabelaDeHorarios}
+                                    scrollable scrollHeight="200px"
+                                    selection={dataHoraSelecionados} onSelectionChange={e => setDataHoraSelecionados(e.value)}
+                                >
+                                    <Column selectionMode="multiple" style={{ width: '3em' }} />
+                                    <Column field="data" header="Data" />
+                                    <Column field="hora" header="Hora" />
+                                </DataTable>
                             </Card>
-
-                            <DataTable value={dadosTabelaDeHorarios} scrollable scrollHeight="200px">
-                                <Column field="data" header="Data"></Column>
-                                <Column field="hora" header="Hora"></Column>
-                            </DataTable>
 
                             <Card>
                                 <Form
-                                    onSubmit={dadosCadastrais => dispatch(cadastrarMedicoRequest(dadosCadastrais))}
+                                    onSubmit={cadastrarMedico}
                                     render={({ handleSubmit }) => (
                                         <form onSubmit={handleSubmit}>
 
@@ -232,6 +197,51 @@ export default function Medicos() {
                         </Card>
                     </div>
             }
+
+            <Dialog header="Cadastrar Horários" visible={incluirHorarioForm} style={{ width: '50vw' }} onHide={() => setIncluirHorarioForm(false)}>
+
+                <Form
+                    onSubmit={adicionarDataHoraNaTabela}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+
+                            <div className={styles.containerCadastroHorario}>
+                                <div className={styles.inputStyles}>
+                                    <Field
+                                        name="data"
+                                        render={({ input }) => (
+                                            <span className="p-d-flex p-flex-column">
+                                                <label>Data(s)</label>
+                                                <Calendar dateFormat="dd/mm/yy" readOnlyInput {...input} />
+                                            </span>
+                                        )}
+                                    />
+                                </div>
+
+                                <div className={styles.inputStyles}>
+                                    <Field
+                                        name="hora"
+                                        render={({ input }) => (
+                                            <span className="p-d-flex p-flex-column">
+                                                <label>Horário(s)</label>
+                                                <MultiSelect value={horario} options={horarios} onChange={(e) => setHorario(e.value)} {...input} />
+                                            </span>
+                                        )}
+                                    />
+                                </div>
+
+                                <div className={styles.butaoFormulario}>
+                                    <Botoes botoes={[
+                                        { tipo: 'rounded p-button-success', icone: 'pi-plus', submit: 'submit' }
+                                    ]} />
+                                </div>
+                            </div>
+
+                        </form>
+                    )}
+                />
+
+            </Dialog>
 
         </div >
     )

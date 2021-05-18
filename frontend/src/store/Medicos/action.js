@@ -8,10 +8,10 @@ import {
 } from "./types";
 
 
-export function cadastrarMedicoRequest(dadosCadastrais) {
+export function cadastrarMedicoRequest(dadosCadastrais, datasHorarios) {
     return {
         type: CADASTRAR_MEDICO_REQUEST,
-        payload: { dadosCadastrais }
+        payload: { dadosCadastrais, datasHorarios }
     }
 }
 
