@@ -6,7 +6,7 @@ import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
 import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { 

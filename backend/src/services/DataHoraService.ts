@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm"
 import { DataHora } from "../entities/DataHora"
 
 interface DataHoraRequestDTO {
-    data: Date;
+    data: string;
     hora: string;
 }
 

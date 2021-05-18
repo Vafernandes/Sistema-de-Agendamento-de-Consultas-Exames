@@ -1,25 +1,40 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 import {
+    CADASTRAR_DATAS_HORARIOS_REQUEST,
     CADASTRAR_MEDICO_REQUEST, LISTAR_TODOS_MEDICOS_REQUEST,
 } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
 import { cadastrarMedicoSuccess, listarTodosMedicosSuccess } from './action';
 
+function* cadastrarDatasHorarios(action) {
+    console.log(action.payload.dadosCadastrais)
+
+    try {
+        const { hora, data } = action.payload.dadosCadastrais;
+
+        const dataHora = {
+            hora,
+            data
+        }
+
+        yield api.post('/dataHora', dataHora);
+
+        toastr.success('Sucesso', 'Cadastro Realizado com sucesso!');
+
+    } catch (error) {
+        toastr.error('Erro', `${error.message}`);
+    }
+}
 
 function* cadastrar(action) {
 
     try {
-        const { nome, crm, horarios_atendimento, datas_atendimento } = action.payload.dadosCadastrais;
-
-        const horasParaString = horarios_atendimento.toString();
-        const datasParaString = datas_atendimento.toString();
+        const { nome, crm } = action.payload.dadosCadastrais;
 
         const medico = {
             nome,
-            crm,
-            horarios_atendimento: horasParaString,
-            datas_atendimento: datasParaString
+            crm
         }
 
         yield api.post('/medicos', medico);
@@ -47,7 +62,10 @@ function* listarTodosMedicos() {
 }
 
 
+
+
 export default all([
     takeLatest(CADASTRAR_MEDICO_REQUEST, cadastrar),
-    takeLatest(LISTAR_TODOS_MEDICOS_REQUEST, listarTodosMedicos)
+    takeLatest(LISTAR_TODOS_MEDICOS_REQUEST, listarTodosMedicos),
+    takeLatest(CADASTRAR_DATAS_HORARIOS_REQUEST, cadastrarDatasHorarios)
 ])

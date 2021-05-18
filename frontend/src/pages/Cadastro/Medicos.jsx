@@ -8,7 +8,12 @@ import Tabela from '../../components/Tabela';
 import { SelectButton } from 'primereact/selectbutton';
 import styles from './styles.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
+import { cadastrarDatasHorariosRequest, cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
+import { useRouter } from 'next/router'
+import { MultiSelect } from 'primereact/multiselect';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
 
 export default function Medicos() {
     const state = useSelector(state => state);
@@ -16,42 +21,84 @@ export default function Medicos() {
 
     const [ativarCadastro, setAtivarCadastro] = useState(false)
     const [elementoSelecionado, setElementoSelecionado] = useState(null)
+    const [horario, setHorario] = useState('');
+
+    const [dadosTabelaDeHorarios, setDadosTabelaDeHorarios] = useState([])
+
+    const router = useRouter()
 
     useEffect(() => {
         dispatch(listarTodosMedicosRequest())
     }, [])
 
-    console.log(state.medico)
-
-    const paymentOptions = [
-        { name: '07:30', value: 1 },
-        { name: '08:00', value: 2 },
-        { name: '08:30', value: 3 },
-        { name: '08:30', value: 4 },
-        { name: '09:00', value: 5 },
-        { name: '09:30', value: 6 },
-        { name: '10:00', value: 7 },
-        { name: '10:30', value: 8 },
-        { name: '11:00', value: 9 },
-        { name: '11:30', value: 10 },
-        { name: '13:00', value: 11 },
-        { name: '13:30', value: 12 },
-        { name: '14:00', value: 13 },
-        { name: '14:30', value: 14 },
-        { name: '15:00', value: 15 },
-        { name: '15:30', value: 16 },
-        { name: '16:00', value: 17 },
-        { name: '16:30', value: 18 },
-        { name: '17:00', value: 19 },
-    ];
-
-    const renderFooter = () => {
-        return (
-            <Botoes botoes={[
-                { nome: 'Cancelar', tipo: 'text', icone: 'pi-times', func: () => { setAtivarCadastro(false) } },
-            ]} />
-        );
+    const editarExcluir = (linhaCorrente) => {
+        return <Botoes botoes={[
+            { tipo: 'secondary', icone: 'pi-eye', func: () => { router.push('/Cadastro/HorariosDatasMedicos') } },
+            { tipo: 'info', icone: 'pi-pencil', func: () => { carregaInformacoesDaClinica(linhaCorrente) } },
+            { tipo: 'danger', icone: 'pi-trash', func: () => { dispatch(deletarClinica(linhaCorrente.id)) } }
+        ]} />
     }
+
+    const horarios = [
+         '07:30',
+         '08:00',
+         '08:30',
+         '09:00',
+         '09:30',
+         '10:00',
+         '10:30',
+         '11:00',
+         '11:30',
+         '12:00',
+         '12:30',
+         '13:00',
+         '13:30',
+         '14:00',
+         '14:30',
+         '15:00',
+         '15:30',
+         '16:00',
+         '16:30',
+         '17:00',
+         '17:30',
+    ];
+    
+    const products = [
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+        { code: 1, name: 'prod 1', category: 'product category', quantity: 2},
+    ]
+
+    function adicionarDataHoraNaTabela(dados) {
+        const dataHorarioAdicionado = dados
+
+        setDadosTabelaDeHorarios([...dadosTabelaDeHorarios, dataHorarioAdicionado])
+
+        // dadosTabelaDeHorarios.map(obj => {
+        //     console.log(obj)
+        // })
+    }
+
+    // console.log(dadosTabelaDeHorarios.map(horariosData => {
+    //     console.log(horariosData.data)
+    // }))
+
+    console.log(dadosTabelaDeHorarios)
 
     return (
         <div style={{ padding: '0 50px 50px 50px' }}>
@@ -60,110 +107,97 @@ export default function Medicos() {
 
                     <div className={styles.cadastroServicoContainer}>
                         <div className={styles.formulario}>
-                        <Form
-                                onSubmit={dadosCadastrais => console.log(dadosCadastrais)}
-                                render={({ handleSubmit }) => (
-                                    <form onSubmit={handleSubmit}>
-                                        <h2>Cadastre as datas e horários</h2>
+                            <Card style={{ margin: '0 0 30px 0' }}>
+                                <Form
+                                    onSubmit={adicionarDataHoraNaTabela}
+                                    render={({ handleSubmit }) => (
+                                        <form onSubmit={handleSubmit}>
 
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="data"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <label>Data</label>
-                                                        <InputText {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
+                                            <h2>Cadastrar Horários</h2>
+                                            <div className={styles.containerCadastroHorario}>
+                                                <div className={styles.inputStyles}>
+                                                    <Field
+                                                        name="data"
+                                                        render={({ input }) => (
+                                                            <span className="p-d-flex p-flex-column">
+                                                                <label>Data(s)</label>
+                                                                <Calendar id="multiple" selectionMode="multiple" readOnlyInput {...input} />
+                                                            </span>
+                                                        )}
+                                                    />
+                                                </div>
 
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="hora"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <label>Hora</label>
-                                                        <InputText {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
+                                                <div className={styles.inputStyles}>
+                                                    <Field
+                                                        name="hora"
+                                                        render={({ input }) => (
+                                                            <span className="p-d-flex p-flex-column">
+                                                                <label>Horário(s)</label>
+                                                                <MultiSelect value={horario} options={horarios} onChange={(e) => setHorario(e.value)} {...input} />
+                                                            </span>
+                                                        )}
+                                                    />
+                                                </div>
 
-                                        <div className={styles.butaoFormulario}>
-                                            <Botoes botoes={[
-                                                { nome: 'Adicionar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
-                                            ]} />
-                                        </div>
+                                                <div className={styles.butaoFormulario}>
+                                                    <Botoes botoes={[
+                                                        { tipo: 'rounded p-button-success', icone: 'pi-plus', submit: 'submit' }
+                                                    ]} />
+                                                </div>
+                                            </div>
 
-                                    </form>
-                                )}
-                            />
+                                        </form>
+                                    )}
+                                />
+                            </Card>
 
-                            <Form
-                                onSubmit={dadosCadastrais => dispatch(cadastrarMedicoRequest(dadosCadastrais))}
-                                render={({ handleSubmit }) => (
-                                    <form onSubmit={handleSubmit}>
-                                        <h2>Dados pessoais</h2>
+                            <DataTable value={dadosTabelaDeHorarios} scrollable scrollHeight="200px">
+                                <Column field="data" header="Data"></Column>
+                                <Column field="hora" header="Hora"></Column>
+                            </DataTable>
 
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="nome"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <label>Nome do Médico(a)</label>
-                                                        <InputText {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
+                            <Card>
+                                <Form
+                                    onSubmit={dadosCadastrais => dispatch(cadastrarMedicoRequest(dadosCadastrais))}
+                                    render={({ handleSubmit }) => (
+                                        <form onSubmit={handleSubmit}>
 
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="crm"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <label>CRM</label>
-                                                        <InputText {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
+                                            <h2>Dados pessoais</h2>
 
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="nome"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Nome do Médico(a)</label>
+                                                            <InputText {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
-                                        <h3>Horários de atendimento</h3>
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="crm"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>CRM</label>
+                                                            <InputText {...input} />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
 
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="horarios_atendimento"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <SelectButton options={paymentOptions} optionLabel="name" multiple {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
-                                        <div className={styles.inputStyles}>
-                                            <Field
-                                                name="datas_atendimento"
-                                                render={({ input }) => (
-                                                    <span className="p-d-flex p-flex-column">
-                                                        <label>Datas de atendimento</label>
-                                                        <Calendar dateFormat="dd/mm/yy" selectionMode="multiple" {...input} />
-                                                    </span>
-                                                )}
-                                            />
-                                        </div>
+                                            <div className={styles.butaoFormulario}>
+                                                <Botoes botoes={[
+                                                    { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
+                                                ]} />
+                                            </div>
 
-                                        <div className={styles.butaoFormulario}>
-                                            <Botoes botoes={[
-                                                { nome: 'Cadastrar', tipo: 'success', icone: 'pi-check', submit: 'submit' }
-                                            ]} />
-                                        </div>
-
-                                    </form>
-                                )}
-                            />
+                                        </form>
+                                    )}
+                                />
+                            </Card>
                             <Botoes botoes={[
                                 { nome: 'Voltar', tipo: 'outlined', icone: 'pi-arrow-left', submit: 'submit', func: () => { setAtivarCadastro(false) } }
                             ]} />
@@ -191,7 +225,8 @@ export default function Medicos() {
                                 id='nome'
                                 colunas={[
                                     { coluna: 'nome', nomeColuna: 'Nome' },
-                                    { coluna: 'crm', nomeColuna: 'CRM' }
+                                    { coluna: 'crm', nomeColuna: 'CRM' },
+                                    { acao: editarExcluir }
                                 ]}
                             />
                         </Card>

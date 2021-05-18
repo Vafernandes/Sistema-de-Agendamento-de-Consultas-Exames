@@ -1,13 +1,14 @@
-import { Column, CreateDateColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Medico } from "./Medico";
 
+@Entity('datas_horas')
 class DataHora {
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
-    data: Date;
+    data: string;
 
     @Column()
     hora: string;

@@ -21,6 +21,10 @@
     margin-top: 2rem;
 }
 
-// .butaoFormulario {
-   
-// }
+.containerCadastroHorario {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin: 1rem 0 1rem;
+}

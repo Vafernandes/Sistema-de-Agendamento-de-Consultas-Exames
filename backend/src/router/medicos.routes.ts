@@ -5,11 +5,11 @@ const medicosRouter = Router()
 
 medicosRouter.post('/', async (request, response) => {
     try {
-        const { nome, crm, datasHorasAtendimento } = request.body;
+        const { nome, crm } = request.body;
 
         const medicoService = new MedicoService()
 
-        const medico = await medicoService.execute({ nome, crm, datasHorasAtendimento })
+        const medico = await medicoService.execute({ nome, crm })
 
         return response.status(201).json(medico)
     } catch (error) {

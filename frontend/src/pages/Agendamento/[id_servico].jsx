@@ -24,6 +24,7 @@ export default function Agendamento(props) {
 
     const [horario, setHorario] = useState('');
     const [endereco, setEndereco] = useState('');
+    const [medico, setMedico] = useState('');
 
     const [displayResponsive, setDisplayResponsive] = useState(false);
 
@@ -82,11 +83,17 @@ export default function Agendamento(props) {
             <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
 
                 <div className="p-d-flex p-flex-column p-mr-6" style={{ width: '20rem' }}>
+                    <h4>Selecione um endereço</h4>
+
+                    <Dropdown style={{ margin: '20px 0 20px' }} value={endereco} options={state.servico.clinicasEnderecos} onChange={e => setEndereco(e.target.value)} optionLabel="nome" placeholder="Endereços" />
+
+                    <h4>Selecione um médico</h4>
+
+                    <Dropdown style={{ margin: '20px 0 20px' }} value={medico} options={state.medico.listaMedicos} onChange={e => setMedico(e.target.value)} optionLabel="nome" placeholder="Medicos" />
+
                     <h4>Selecione um horário</h4>
 
                     <Dropdown style={{ margin: '20px 0 20px' }} value={horario} options={cities} onChange={e => setHorario(e.target.value)} optionLabel="name" placeholder="Horários" />
-
-                    <Dropdown value={endereco} options={state.servico.clinicasEnderecos} onChange={e => setEndereco(e.target.value)} optionLabel="nome" placeholder="Endereços" />
                 </div>
                 <div className="p-mr-6">
                     <h4>Selecione uma data</h4>
@@ -134,7 +141,7 @@ export default function Agendamento(props) {
 
                     <div>
                         <Botoes botoes={[
-                            { nome: 'Confirmar Agendamento', tipo: 'submit', func: () => {}, submit: 'submit' }
+                            { nome: 'Confirmar Agendamento', tipo: 'submit', func: () => { }, submit: 'submit' }
                         ]} />
                     </div>
                 </form>
