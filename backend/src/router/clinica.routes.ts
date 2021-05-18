@@ -100,4 +100,18 @@ clinicaRouter.put('/atualizarClinica/:id', async (request, response) => {
     }
 });
 
+clinicaRouter.get('/medicos/clinicas/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const clinicaService = new ClinicaService();
+        
+        const medicos = await clinicaService.listarMedicosPorClinica(id);
+
+        return response.status(200).json(medicos)
+    } catch (error) {
+        return response.status(400).json({ error: error.message });
+    }
+})
+
 export { clinicaRouter }

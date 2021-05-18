@@ -3,7 +3,8 @@ import {
     LISTAR_TODAS_CLINICAS_SUCCESS,
     LISTAR_CLINICAS_POR_ID_SUCCESS,
     ATUALIZA_CLINICA_SUCCESS,
-    LIMPAR_DADOS_DA_CLINICA
+    LIMPAR_DADOS_DA_CLINICA,
+    LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_SUCCESS
 } from "./types";
 
 const INITIAL_STATE = {
@@ -18,6 +19,7 @@ const INITIAL_STATE = {
         cep: ''
     },
     listaDeClinicas: [],
+    medicosDeUmaClinica: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -62,6 +64,11 @@ export default (state = INITIAL_STATE, action) => {
                     bairro: '',
                     cep: ''
                 }
+            }
+        case LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_SUCCESS:
+            return {
+                ...state,
+                medicosDeUmaClinica: action.payload.listaDeMedicos
             }
         default:
             return state

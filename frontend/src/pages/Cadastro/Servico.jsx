@@ -83,10 +83,7 @@ function CadastroServico(props) {
                                                                     optionLabel="nome" 
                                                                     placeholder="Selecione a(s) clínica(s)" 
                                                                     {...input}
-                                                                />
-
-                                                               
-                                                                 {/* <Dropdown options={state.clinica.listaDeClinicas} optionLabel="nome" placeholder="Selecione a clínica" {...input} /> */}
+                                                                />                                                               
                                                             </span>
                                                         )}
                                                     />

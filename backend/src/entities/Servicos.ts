@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Clinica } from "./Clinica";
+import { Medico } from "./Medico";
 
 @Entity('servicos')
 class Servicos {
@@ -19,6 +20,9 @@ class Servicos {
     @ManyToMany(() => Clinica)
     @JoinTable({ name: 'servicos_clinicas' })
     clinicas: Clinica[];
+
+    @OneToMany(() => Medico, medico => medico.servico)
+    medicos: Medico[];
 
     @CreateDateColumn()
     created_at: Date;

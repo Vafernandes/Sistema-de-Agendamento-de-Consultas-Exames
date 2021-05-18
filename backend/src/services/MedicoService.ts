@@ -7,6 +7,8 @@ interface RequestDTO {
     nome: string;
     crm: string;
     datasHorasCadastradas: DataHora[];
+    id_servico: string;
+    id_clinica: string;
 }
 
 class MedicoService {
@@ -17,7 +19,13 @@ class MedicoService {
         this.medicoRepository = getRepository(Medico);
     }
 
-    public async execute({ nome, crm, datasHorasCadastradas }: RequestDTO): Promise<Medico> {
+    public async execute({ 
+        nome, 
+        crm, 
+        datasHorasCadastradas,
+        id_servico,
+        id_clinica
+    }: RequestDTO): Promise<Medico> {
 
         const dataHoraService = new DataHoraService();
         const datasHorasObjCadastradosNoBanco: DataHora[] = [];
@@ -31,7 +39,9 @@ class MedicoService {
         const medico = this.medicoRepository.create({ 
             nome, 
             crm,
-            datasHorarios: datasHorasObjCadastradosNoBanco 
+            datasHorarios: datasHorasObjCadastradosNoBanco,
+            id_servico,
+            id_clinica
         });
 
         await this.medicoRepository.manager.save(medico);
@@ -43,6 +53,22 @@ class MedicoService {
         const medicos = await this.medicoRepository.find();
 
         return medicos;
+    }
+
+    public async buscaPorId(id:string): Promise<Medico> {
+        const medico = await this.medicoRepository.findOne(id);
+
+        if(!medico) {
+            throw new Error('Medico não encontrado');
+        }
+
+        return medico;
+    }
+
+    public async deletarMedico(id: string): Promise<void> {
+        await this.buscaPorId(id);
+
+        await this.medicoRepository.delete(id);
     }
 }
 

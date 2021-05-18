@@ -1,11 +1,11 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 import {
     CADASTRAR_DATAS_HORARIOS_REQUEST,
-    CADASTRAR_MEDICO_REQUEST, LISTAR_TODOS_MEDICOS_REQUEST,
+    CADASTRAR_MEDICO_REQUEST, DELETAR_MEDICO_REQUEST, LISTAR_TODOS_MEDICOS_REQUEST,
 } from './types';
 import { api } from '../../service/api';
 import { toastr } from 'react-redux-toastr';
-import { cadastrarMedicoSuccess, listarTodosMedicosSuccess } from './action';
+import { cadastrarMedicoSuccess, deletarMedicoSuccess, listarTodosMedicosSuccess } from './action';
 
 function* cadastrarDatasHorarios(action) {
     console.log(action.payload.dadosCadastrais)
@@ -34,12 +34,14 @@ function* cadastrar(action) {
     console.log(action.payload.datasHorarios)
 
     try {
-        const { nome, crm } = action.payload.dadosCadastrais;
+        const { nome, crm, clinicaMedico, especialidade } = action.payload.dadosCadastrais;
 
         const medico = {
             nome,
             crm,
-            datasHorasCadastradas: action.payload.datasHorarios
+            datasHorasCadastradas: action.payload.datasHorarios,
+            id_servico: especialidade.id,
+            id_clinica: clinicaMedico.id
         }
 
         console.log(medico)
@@ -68,11 +70,27 @@ function* listarTodosMedicos() {
     }
 }
 
+function* deletarMedico(action) {
+
+    try {
+        const id = action.payload.id;
+    
+        yield api.delete(`medicos/deletarMedico/${id}`);
+        yield put(deletarMedicoSuccess());
+        yield call(listarTodosMedicos)
+
+        toastr.success('Sucesso', 'Deletado com sucesso!');
+
+    } catch (error) {
+        toastr.error('Erro', `${error.message}`);
+    }
+}
 
 
 
 export default all([
     takeLatest(CADASTRAR_MEDICO_REQUEST, cadastrar),
     takeLatest(LISTAR_TODOS_MEDICOS_REQUEST, listarTodosMedicos),
-    takeLatest(CADASTRAR_DATAS_HORARIOS_REQUEST, cadastrarDatasHorarios)
+    takeLatest(CADASTRAR_DATAS_HORARIOS_REQUEST, cadastrarDatasHorarios),
+    takeLatest(DELETAR_MEDICO_REQUEST, deletarMedico)
 ])

@@ -7,6 +7,8 @@ import {
     LIMPAR_DADOS_DA_CLINICA,
     LISTAR_CLINICAS_POR_ID_REQUEST,
     LISTAR_CLINICAS_POR_ID_SUCCESS,
+    LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_REQUEST,
+    LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_SUCCESS,
     LISTAR_TODAS_CLINICAS_REQUEST,
     LISTAR_TODAS_CLINICAS_SUCCESS,
     LISTA_CLINICA_POR_ID_AGENDAMENTO
@@ -77,5 +79,19 @@ export function atualizaClinicaSuccess() {
 export function limparDadosDaClinica() {
     return {
         type: LIMPAR_DADOS_DA_CLINICA
+    }
+}
+
+export function listarMedicosDeUmaClinicaPorIdClinicaRequest(id) {
+    return {
+        type: LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_REQUEST,
+        payload: { id }
+    }
+}
+
+export function listarMedicosDeUmaClinicaPorIdClinicaSuccess(listaDeMedicos) {
+    return {
+        type: LISTAR_MEDICOS_DE_UMA_CLINICA_POR_ID_CLINICA_SUCCESS,
+        payload: { listaDeMedicos }
     }
 }

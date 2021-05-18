@@ -3,6 +3,8 @@ import {
     CADASTRAR_DATAS_HORARIOS_SUCCESS,
     CADASTRAR_MEDICO_REQUEST, 
     CADASTRAR_MEDICO_SUCCESS, 
+    DELETAR_MEDICO_REQUEST, 
+    DELETAR_MEDICO_SUCCESS, 
     LISTAR_TODOS_MEDICOS_REQUEST, 
     LISTAR_TODOS_MEDICOS_SUCCESS 
 } from "./types";
@@ -46,5 +48,18 @@ export function cadastrarDatasHorariosSuccess(dadosCadastrais) {
     return {
         type: CADASTRAR_DATAS_HORARIOS_SUCCESS,
         payload: { dadosCadastrais }
+    }
+}
+
+export function deletarMedicoRequest(id) {
+    return {
+        type: DELETAR_MEDICO_REQUEST,
+        payload: { id }
+    }
+}
+
+export function deletarMedicoSuccess() {
+    return {
+        type: DELETAR_MEDICO_SUCCESS
     }
 }

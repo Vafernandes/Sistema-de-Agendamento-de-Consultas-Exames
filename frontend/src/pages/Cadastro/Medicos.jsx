@@ -7,12 +7,13 @@ import Botoes from '../../components/Botoes';
 import Tabela from '../../components/Tabela';
 import styles from './styles.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastrarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
-import { useRouter } from 'next/router'
+import { cadastrarMedicoRequest, deletarMedicoRequest, listarTodosMedicosRequest } from '../../store/Medicos/action';
 import { MultiSelect } from 'primereact/multiselect';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
+import { listarClinicaPorIdAgendamento, listarTodosRequest } from '../../store/Servicos/action';
+import { Dropdown } from 'primereact/dropdown';
 
 
 export default function Medicos() {
@@ -26,18 +27,23 @@ export default function Medicos() {
     const [dadosTabelaDeHorarios, setDadosTabelaDeHorarios] = useState([])
     const [dataHoraSelecionados, setDataHoraSelecionados] = useState('')
     const [incluirHorarioForm, setIncluirHorarioForm] = useState(false)
-
-    const router = useRouter()
+    const [selecionaClinica, setSelecionaClinica] = useState(null);
+    const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState({})
 
     useEffect(() => {
         dispatch(listarTodosMedicosRequest())
+        dispatch(listarTodosRequest())
     }, [])
+
+    useEffect(() => {
+        dispatch(listarClinicaPorIdAgendamento(especialidadeSelecionada.id))
+    }, [especialidadeSelecionada])
 
     const editarExcluir = (linhaCorrente) => {
         return <Botoes botoes={[
-            { tipo: 'secondary', icone: 'pi-eye', func: () => { router.push('/Cadastro/HorariosDatasMedicos') } },
+            { tipo: 'secondary', icone: 'pi-eye', func: () => { } },
             { tipo: 'info', icone: 'pi-pencil', func: () => { carregaInformacoesDaClinica(linhaCorrente) } },
-            { tipo: 'danger', icone: 'pi-trash', func: () => { dispatch(deletarClinica(linhaCorrente.id)) } }
+            { tipo: 'danger', icone: 'pi-trash', func: () => { dispatch(deletarMedicoRequest(linhaCorrente.id)) } }
         ]} />
     }
 
@@ -128,6 +134,42 @@ export default function Medicos() {
                                         <form onSubmit={handleSubmit}>
 
                                             <h2>Dados pessoais</h2>
+
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="especialidade"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Selecione a especialidade do médico</label>
+                                                            <Dropdown
+                                                                options={state.servico.listaDeServicos}
+                                                                optionLabel="nome"
+                                                                onChange={setEspecialidadeSelecionada(input.value)}
+                                                                placeholder="Selecione a especialidade"
+                                                                {...input}
+                                                            />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            <div className={styles.inputStyles}>
+                                                <Field
+                                                    name="clinicaMedico"
+                                                    render={({ input }) => (
+                                                        <span className="p-d-flex p-flex-column">
+                                                            <label>Selecione a Clínica</label>
+                                                            <Dropdown
+                                                                options={state.servico.clinicasEnderecos}
+                                                                optionLabel="nome"
+                                                                placeholder="Selecione a(s) clínica(s)"
+                                                                {...input}
+                                                            />
+                                                        </span>
+                                                    )}
+                                                />
+                                            </div>
+
 
                                             <div className={styles.inputStyles}>
                                                 <Field

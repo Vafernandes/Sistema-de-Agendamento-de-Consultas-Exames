@@ -12,6 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputMask } from 'primereact/inputmask';
 import { InputText } from 'primereact/inputtext';
+import { listarMedicosDeUmaClinicaPorIdClinicaRequest } from '../../store/Clinicas/action';
 
 
 
@@ -32,6 +33,9 @@ export default function Agendamento(props) {
         dispatch(listarClinicaPorIdAgendamento(props.servico.id))
     }, []);
 
+    useEffect(() => {
+        dispatch(listarMedicosDeUmaClinicaPorIdClinicaRequest(endereco.id))
+    }, [endereco])
 
     const handleAgendamento = (e) => {
         e.preventDefault()
@@ -65,12 +69,6 @@ export default function Agendamento(props) {
         { name: '14:00', code: '5' }
     ];
 
-    const enderecos = [
-        { local: `${state.clinica.clinica.nome}`, rua: `${state.clinica.clinica.logradouro}`, numero: `${state.clinica.clinica.numero}` }
-    ]
-
-    console.log(state.servico.clinicasEnderecos)
-
     return (
         <div className="p-d-flex p-flex-column" >
 
@@ -85,15 +83,35 @@ export default function Agendamento(props) {
                 <div className="p-d-flex p-flex-column p-mr-6" style={{ width: '20rem' }}>
                     <h4>Selecione um endereço</h4>
 
-                    <Dropdown style={{ margin: '20px 0 20px' }} value={endereco} options={state.servico.clinicasEnderecos} onChange={e => setEndereco(e.target.value)} optionLabel="nome" placeholder="Endereços" />
+                    <Dropdown 
+                        style={{ margin: '20px 0 20px' }} 
+                        value={endereco} 
+                        options={state.servico.clinicasEnderecos} 
+                        onChange={e => setEndereco(e.target.value)} 
+                        optionLabel="nome" 
+                        placeholder="Endereços" 
+                    />
 
                     <h4>Selecione um médico</h4>
 
-                    <Dropdown style={{ margin: '20px 0 20px' }} value={medico} options={state.medico.listaMedicos} onChange={e => setMedico(e.target.value)} optionLabel="nome" placeholder="Medicos" />
+                    <Dropdown 
+                        style={{ margin: '20px 0 20px' }} 
+                        value={medico} 
+                        options={state.clinica.medicosDeUmaClinica} 
+                        onChange={e => setMedico(e.target.value)} 
+                        optionLabel="nome" 
+                        placeholder="Medicos" 
+                    />
 
                     <h4>Selecione um horário</h4>
 
-                    <Dropdown style={{ margin: '20px 0 20px' }} value={horario} options={cities} onChange={e => setHorario(e.target.value)} optionLabel="name" placeholder="Horários" />
+                    <Dropdown 
+                        style={{ margin: '20px 0 20px' }} 
+                        value={horario} options={cities} 
+                        onChange={e => setHorario(e.target.value)} 
+                        optionLabel="name" 
+                        placeholder="Horários" 
+                    />
                 </div>
                 <div className="p-mr-6">
                     <h4>Selecione uma data</h4>

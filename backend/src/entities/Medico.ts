@@ -1,5 +1,7 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Clinica } from "./Clinica";
 import { DataHora } from "./DataHora";
+import { Servicos } from "./Servicos";
 
 @Entity('medicos')
 class Medico {
@@ -12,6 +14,20 @@ class Medico {
 
     @Column()
     crm: string;
+
+    @Column()
+    id_servico: string;
+
+    @Column()
+    id_clinica: string;
+
+    @ManyToOne(() => Clinica, clinica => clinica.medicos)
+    @JoinColumn({ name: 'id_clinica' })
+    clinica: Clinica;
+
+    @ManyToOne(() => Servicos, servico => servico.medicos)
+    @JoinColumn({ name: 'id_servico' })
+    servico: Servicos;
 
     @OneToMany(() => DataHora, dataHora => dataHora.medico)
     datasHorarios: DataHora[];

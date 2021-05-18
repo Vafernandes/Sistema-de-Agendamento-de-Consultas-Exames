@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 import { Clinica } from "../entities/Clinica";
 import { Endereco } from "../entities/Endereco";
+import { Medico } from "../entities/Medico";
 
 interface PostClinicaRequestDTO {
     nome: string;
@@ -108,6 +109,21 @@ class ClinicaService {
         await this.clinicaRepository.save(clinicaExiste)
 
         return clinicaExiste;
+    }
+
+    public async listarMedicosPorClinica(idClinica: string): Promise<Medico[]> {
+        const clinicasMedicos = await this.clinicaRepository.find({
+            relations: ['medicos']
+        })
+
+        let medicos: Medico[] = [];
+        for (const clinica of clinicasMedicos) {
+            if(clinica.id === idClinica) {
+                medicos = clinica.medicos
+            }
+        }
+
+        return medicos;
     }
 
 }

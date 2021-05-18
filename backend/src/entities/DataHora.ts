@@ -13,7 +13,9 @@ class DataHora {
     @Column()
     hora: string;
 
-    @ManyToOne(() => Medico, medico => medico.datasHorarios)
+    @ManyToOne(() => Medico, medico => medico.datasHorarios, {
+        onDelete: 'CASCADE'
+    })
     medico: Medico;
 
     @CreateDateColumn()
