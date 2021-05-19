@@ -70,6 +70,21 @@ class MedicoService {
 
         await this.medicoRepository.delete(id);
     }
+
+    public async listarDataHora(id: string) {
+        const datasHoras = await this.medicoRepository.find({
+            relations: ['datasHorarios']
+        })
+
+        let datasHorariosDeUmMedico: DataHora[] = [];
+        for (const medico of datasHoras) {
+            if(medico.id === id) {
+                datasHorariosDeUmMedico = medico.datasHorarios
+            }
+        }
+
+        return datasHorariosDeUmMedico;
+    }
 }
 
 export { MedicoService }

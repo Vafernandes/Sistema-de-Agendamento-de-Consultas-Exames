@@ -5,6 +5,8 @@ import {
     CADASTRAR_MEDICO_SUCCESS, 
     DELETAR_MEDICO_REQUEST, 
     DELETAR_MEDICO_SUCCESS, 
+    LISTAR_HORA_DATA_DE_UM_MEDICO_POR_ID_MEDICO_REQUEST, 
+    LISTAR_HORA_DATA_DE_UM_MEDICO_POR_ID_MEDICO_SUCCESS, 
     LISTAR_TODOS_MEDICOS_REQUEST, 
     LISTAR_TODOS_MEDICOS_SUCCESS 
 } from "./types";
@@ -61,5 +63,19 @@ export function deletarMedicoRequest(id) {
 export function deletarMedicoSuccess() {
     return {
         type: DELETAR_MEDICO_SUCCESS
+    }
+}
+
+export function listarHorarioDataDeUmMedicoPorIdMedicoRequest(id) {
+    return {
+        type: LISTAR_HORA_DATA_DE_UM_MEDICO_POR_ID_MEDICO_REQUEST,
+        payload: { id }
+    }
+}
+
+export function listarHorarioDataDeUmMedicoPorIdMedicoSuccess(listaDeHorarios) {
+    return {
+        type: LISTAR_HORA_DATA_DE_UM_MEDICO_POR_ID_MEDICO_SUCCESS,
+        payload: { listaDeHorarios }
     }
 }

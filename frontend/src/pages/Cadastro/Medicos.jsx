@@ -76,11 +76,11 @@ export default function Medicos() {
         dados.data.setDate(dados.data.getDate());
 
         const dataHorarioAdicionado = {
-            data: dados.data.toLocaleDateString(),
+            data: dados.data.toString(),
             hora: dados.hora.join()
         }
 
-        console.log(dataHorarioAdicionado.data)
+        console.log(typeof dataHorarioAdicionado.data)
 
         setDadosTabelaDeHorarios([...dadosTabelaDeHorarios, dataHorarioAdicionado])
 

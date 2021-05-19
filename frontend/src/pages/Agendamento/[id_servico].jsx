@@ -13,6 +13,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputMask } from 'primereact/inputmask';
 import { InputText } from 'primereact/inputtext';
 import { listarMedicosDeUmaClinicaPorIdClinicaRequest } from '../../store/Clinicas/action';
+import { listarHorarioDataDeUmMedicoPorIdMedicoRequest } from '../../store/Medicos/action';
 
 
 
@@ -37,6 +38,11 @@ export default function Agendamento(props) {
         dispatch(listarMedicosDeUmaClinicaPorIdClinicaRequest(endereco.id))
     }, [endereco])
 
+    useEffect(() => {
+        dispatch(listarHorarioDataDeUmMedicoPorIdMedicoRequest(medico.id))
+    }, [medico])
+
+
     const handleAgendamento = (e) => {
         e.preventDefault()
         const agendamento = {
@@ -50,17 +56,6 @@ export default function Agendamento(props) {
 
     }
 
-    addLocale('pt', {
-        firstDayOfWeek: 1,
-        dayNames: ['domingo', 'sgunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-        dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
-        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-        monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-        monthNamesShort: ['jan', 'feb', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-        today: 'Hoje',
-        clear: 'Claro'
-    });
-
     const cities = [
         { name: '08:30', code: '1' },
         { name: '10:00', code: '2' },
@@ -68,6 +63,31 @@ export default function Agendamento(props) {
         { name: '13:00', code: '4' },
         { name: '14:00', code: '5' }
     ];
+
+
+    let horariosDatasSate = []
+    state.medico.dataHorarios.map(ddd => {
+        //console.log(new Date(ddd.data))
+        horariosDatasSate.push(new Date(ddd.data))
+    })
+
+    
+
+    var date = new Date();
+    var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    for(let i = 0; i < ultimoDia.getDate(); i++) {
+        if(horariosDatasSate.length !== 0) {
+            if(!horariosDatasSate[i] === undefined) {
+                console.log('caius')
+                if(horariosDatasSate[i].getDate() === i) {
+                    console.log(i)
+                }
+            }
+        }
+    }
+    
+    //console.log(ultimoDia.getDate());
 
     return (
         <div className="p-d-flex p-flex-column" >
@@ -83,39 +103,41 @@ export default function Agendamento(props) {
                 <div className="p-d-flex p-flex-column p-mr-6" style={{ width: '20rem' }}>
                     <h4>Selecione um endereço</h4>
 
-                    <Dropdown 
-                        style={{ margin: '20px 0 20px' }} 
-                        value={endereco} 
-                        options={state.servico.clinicasEnderecos} 
-                        onChange={e => setEndereco(e.target.value)} 
-                        optionLabel="nome" 
-                        placeholder="Endereços" 
+                    <Dropdown
+                        style={{ margin: '20px 0 20px' }}
+                        value={endereco}
+                        options={state.servico.clinicasEnderecos}
+                        onChange={e => setEndereco(e.target.value)}
+                        optionLabel="nome"
+                        placeholder="Endereços"
                     />
 
                     <h4>Selecione um médico</h4>
 
-                    <Dropdown 
-                        style={{ margin: '20px 0 20px' }} 
-                        value={medico} 
-                        options={state.clinica.medicosDeUmaClinica} 
-                        onChange={e => setMedico(e.target.value)} 
-                        optionLabel="nome" 
-                        placeholder="Medicos" 
+                    <Dropdown
+                        style={{ margin: '20px 0 20px' }}
+                        value={medico}
+                        options={state.clinica.medicosDeUmaClinica}
+                        onChange={e => setMedico(e.target.value)}
+                        optionLabel="nome"
+                        placeholder="Medicos"
                     />
 
                     <h4>Selecione um horário</h4>
 
-                    <Dropdown 
-                        style={{ margin: '20px 0 20px' }} 
-                        value={horario} options={cities} 
-                        onChange={e => setHorario(e.target.value)} 
-                        optionLabel="name" 
-                        placeholder="Horários" 
+                    <Dropdown
+                        style={{ margin: '20px 0 20px' }}
+                        value={horario} options={cities}
+                        onChange={e => setHorario(e.target.value)}
+                        optionLabel="name"
+                        placeholder="Horários"
                     />
                 </div>
                 <div className="p-mr-6">
                     <h4>Selecione uma data</h4>
-                    <Calendar
+                    <Calendar value={dataAgendamento} onChange={(e) => setDataAgendamento(e.value)} disabledDates={horariosDatasSate} readOnlyInput inline />
+
+                    {/* <Calendar
                         style={{ margin: '20px 0 20px' }}
                         id="disableddays"
                         inline dateFormat="dd/mm/yy"
@@ -125,7 +147,7 @@ export default function Agendamento(props) {
                         dateFormat="dd/mm/yy"
                         disabledDays={[1, 0]}
                         readOnlyInput
-                    />
+                    /> */}
                 </div>
                 {/* <div className="p-mr-6">
                         <h4>Clínicas disponíveis</h4>

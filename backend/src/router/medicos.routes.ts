@@ -63,4 +63,18 @@ medicosRouter.delete('/deletarMedico/:id', async (request, response) => {
     }
 })
 
+medicosRouter.get('/listar/horarios/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const medicoService = new MedicoService();
+
+        const horariosDatas = await medicoService.listarDataHora(id)
+
+        return response.status(200).json(horariosDatas);
+    } catch (error) {
+        return response.status(400).json({ error: error.message })
+    }
+})
+
 export { medicosRouter }
