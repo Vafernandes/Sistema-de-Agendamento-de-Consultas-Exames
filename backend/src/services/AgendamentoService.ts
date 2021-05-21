@@ -1,10 +1,12 @@
-import { startOfHour } from 'date-fns'
 import { getRepository, Repository } from 'typeorm';
 import { Agendamento } from '../entities/Agendamento';
 
 interface RequestDTO {
-    id_servico: string;
-    data: Date;
+    id_servico: string,
+    data: string,
+    id_medico: string,
+    id_clinica: string,
+    hora: string
 }
 
 class AgendamentoService {
@@ -15,21 +17,28 @@ class AgendamentoService {
         this.agendamentoRepository = getRepository(Agendamento);
     }
 
-    public async execute({ id_servico, data }: RequestDTO): Promise<Agendamento> {
+    public async execute({
+        id_servico,
+        data,
+        id_medico,
+        id_clinica,
+        hora
+    }: RequestDTO): Promise<Agendamento> {
 
-        const dataAgendamento = startOfHour(data);
-
-        const existeAgendamentoNaMesmaData = await this.agendamentoRepository.findOne({
-            where: { data: dataAgendamento }
+        const existeAgendamentoNoMesmoHorario = await this.agendamentoRepository.findOne({
+            hora
         })
 
-        if(existeAgendamentoNaMesmaData) {
+        if (existeAgendamentoNoMesmoHorario) {
             throw new Error('Agendamento já existente neste horário!');
         }
 
         const agendamento = this.agendamentoRepository.create({
             id_servico,
-            data: dataAgendamento
+            data,
+            id_medico,
+            id_clinica,
+            hora
         });
 
         await this.agendamentoRepository.save(agendamento);

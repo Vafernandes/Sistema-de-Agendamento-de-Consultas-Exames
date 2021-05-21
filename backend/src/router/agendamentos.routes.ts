@@ -6,13 +6,23 @@ const agendamentosRouter = Router();
 
 agendamentosRouter.post('/', async (request, response) => {
     try {
-        const { id_servico, data } = request.body;
+        const { 
+            id_servico,
+            data,
+            id_medico,
+            id_clinica,
+            hora
+         } = request.body;
 
         const agendamentoService = new AgendamentoService();
 
-        const parsedDate = parseISO(data);
-
-        const agendamento = await agendamentoService.execute({ id_servico, data: parsedDate });
+        const agendamento = await agendamentoService.execute({ 
+            id_servico, 
+            data, 
+            id_medico,
+            id_clinica,
+            hora 
+        });
 
         return response.status(201).json(agendamento);
     } catch (error) {

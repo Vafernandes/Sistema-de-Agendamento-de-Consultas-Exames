@@ -12,6 +12,7 @@ import { InputMask } from 'primereact/inputmask';
 import { InputText } from 'primereact/inputtext';
 import { listarMedicosDeUmaClinicaPorIdClinicaRequest } from '../../store/Clinicas/action';
 import { listarHorarioDataDeUmMedicoPorIdMedicoRequest } from '../../store/Medicos/action';
+import { cadastroAgendamentoRequest } from '../../store/Agendamento/action';
 
 export default function Agendamento(props) {
     const state = useSelector(state => state)
@@ -23,6 +24,8 @@ export default function Agendamento(props) {
     const [horario, setHorario] = useState('');
     const [endereco, setEndereco] = useState('');
     const [medico, setMedico] = useState('');
+
+    console.log(medico)
 
     const [displayResponsive, setDisplayResponsive] = useState(false);
 
@@ -54,13 +57,15 @@ export default function Agendamento(props) {
         e.preventDefault()
         const agendamento = {
             id_servico: nextRouter.query.id_servico,
-            data: dataAgendamento
+            data: dataAgendamento,
+            id_medico: medico.id,
+            id_clinica: endereco.id,
+            hora: horario
         }
 
-        console.log(agendamento)
+        dispatch(cadastroAgendamentoRequest(agendamento))
 
-        api.post('agendamentos', agendamento)
-
+        setDisplayResponsive(false)
     }
 
     let datasMedicoStateConvertidas = []
@@ -92,7 +97,6 @@ export default function Agendamento(props) {
         datasDesabilitadasParaConulta.push(new Date(dataNova.getFullYear(), dataNova.getMonth(), diaDoMesIsolado));
     })
 
-    console.log(horariosDeUmaClinica)
     return (
         <div className="p-d-flex p-flex-column" >
 
@@ -105,7 +109,7 @@ export default function Agendamento(props) {
             <div className="p-d-flex p-jc-center p-flex-row p-flex-wrap">
 
                 <div className="p-d-flex p-flex-column p-mr-6" style={{ width: '20rem' }}>
-                    <h4>Selecione um endereço</h4>
+                    <h4>Selecione uma clínica</h4>
 
                     <Dropdown
                         style={{ margin: '20px 0 20px' }}
@@ -113,7 +117,7 @@ export default function Agendamento(props) {
                         options={state.servico.clinicasEnderecos}
                         onChange={e => setEndereco(e.target.value)}
                         optionLabel="nome"
-                        placeholder="Endereços"
+                        placeholder="Clínicas"
                     />
 
                     <h4>Selecione um médico</h4>
@@ -158,16 +162,28 @@ export default function Agendamento(props) {
             </div>
 
             <Dialog header="Confirmar agendamento" visible={displayResponsive} onHide={() => setDisplayResponsive(false)} breakpoints={{ '960px': '75vw' }} style={{ width: '50vw' }}>
-                <form>
+                <p>Médico: {medico.nome}</p>
+                <p>CRM: {medico.crm}</p>
+                <p>Endereço: {endereco.endereco !== undefined ? endereco.endereco.logradouro : ''}, {endereco.endereco !== undefined ? endereco.endereco.numero : ''}</p>
+                <p>Bairro: {endereco.endereco !== undefined ? endereco.endereco.bairro : ''}</p>
+                <form onSubmit={handleAgendamento}>
 
                     <div className="p-d-flex p-flex-column p-mr-6">
-                        <Calendar value={dataAgendamento} dateFormat="dd/mm/yy" readOnly showIcon />
-                        <InputMask mask="99:99" value={horario} readOnly />
+                        <div className="p-d-flex p-flex-column p-mr-6">
+                            <label style={{ padding: '10px 0 10px' }}>Clínica</label>
+                            <InputText value={endereco.nome} readOnly />
+                        </div>
                     </div>
 
-                    <div className="p-d-flex p-flex-column p-mr-6">
-
-                        <InputText value={endereco.nome} readOnly />
+                    <div className="p-d-flex p-mr-6">
+                        <div className="p-d-flex p-flex-column p-mr-6">
+                            <label style={{ padding: '10px 0 10px' }}>Data</label>
+                            <Calendar value={dataAgendamento} dateFormat="dd/mm/yy" readOnly showIcon />
+                        </div>
+                        <div className="p-d-flex p-flex-column p-mr-6">
+                            <label style={{ padding: '10px 0 10px' }}>Hora</label>
+                            <InputMask mask="99:99" value={horario} readOnly />
+                        </div>
                     </div>
 
                     <div>

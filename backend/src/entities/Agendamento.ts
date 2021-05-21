@@ -1,4 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Clinica } from "./Clinica";
+import { Medico } from "./Medico";
 import { Servicos } from "./Servicos";
 
 @Entity('agendamentos')
@@ -10,12 +12,29 @@ class Agendamento {
     @Column()
     id_servico: string;
 
-    @ManyToOne(() => Servicos)
-    @JoinColumn({ name: 'id_servico' })
-    agendamento: Agendamento;
+    @Column()
+    id_medico: string;
 
     @Column()
-    data: Date;
+    id_clinica: string;
+    
+    @Column()
+    data: string;
+
+    @Column()
+    hora: string;
+
+    @ManyToOne(() => Servicos)
+    @JoinColumn({ name: 'id_servico' })
+    servico: Servicos;
+
+    @ManyToOne(() => Medico)
+    @JoinColumn({ name: 'id_medico' })
+    medico: Medico;
+
+    @ManyToOne(() => Clinica)
+    @JoinColumn({ name: 'id_clinica' })
+    clinica: Clinica;
 
     @CreateDateColumn()
     created_at: Date;
