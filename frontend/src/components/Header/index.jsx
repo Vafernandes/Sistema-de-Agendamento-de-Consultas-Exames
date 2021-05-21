@@ -43,7 +43,12 @@ export default function TopMenu() {
                     <i className="pi pi-bars" style={{ 'fontSize': '2em', color: 'var(--gray-800)' }}></i>
                 </Button>
 
-                <Button label="Entrar" className="p-ml-auto p-button-success" />
+                <Link href="/Login">
+                    <a>
+                    <Button label="Entrar" className="p-ml-auto p-button-success" />
+                    </a>
+                </Link>
+                
             </div>
         </>
     )
