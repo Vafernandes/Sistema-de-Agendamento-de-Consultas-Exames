@@ -4,22 +4,25 @@ import { Field, Form } from "react-final-form"
 import Botoes from "../../components/Botoes"
 import styles from './styles.module.scss'
 import Link from 'next/link'
+import { useDispatch } from 'react-redux';
+import { autenticarUsuario } from "../../store/Usuario/action";
 
 export default function Login() {
+    const dispatch = useDispatch();
 
     return (
 
         <div className={styles.containerLogin}>
             <h1>Login</h1>
             <Form
-                onSubmit={dadosLogin => console.log(dadosLogin)}
+                onSubmit={dadosLogin => dispatch(autenticarUsuario(dadosLogin))}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <div className="p-d-flex p-flex-column">
 
                             <div className={styles.inputContainerLogin}>
                                 <Field
-                                    name="login"
+                                    name="cpf"
                                     render={({ input }) => (
                                         <span className="p-d-flex p-flex-column">
                                             <label>Email/CPF</label>
@@ -35,7 +38,7 @@ export default function Login() {
                                     render={({ input }) => (
                                         <span className="p-d-flex p-flex-column">
                                             <label>Senha</label>
-                                            <Password toggleMask {...input}/>
+                                            <Password feedback={false} {...input}/>
                                         </span>
                                     )}
                                 />
@@ -51,7 +54,7 @@ export default function Login() {
                     </form>
                 )}
             />
-            <Link href="">
+            <Link href="/Cadastro/Usuario">
             <a>
                 Não tem uma conta? Cadastre-se
             </a>

@@ -6,7 +6,8 @@ interface RequestDTO {
     data: string,
     id_medico: string,
     id_clinica: string,
-    hora: string
+    hora: string,
+    id_usuario: string
 }
 
 class AgendamentoService {
@@ -22,7 +23,8 @@ class AgendamentoService {
         data,
         id_medico,
         id_clinica,
-        hora
+        hora,
+        id_usuario
     }: RequestDTO): Promise<Agendamento> {
 
         const existeAgendamentoNoMesmoHorario = await this.agendamentoRepository.findOne({
@@ -38,7 +40,8 @@ class AgendamentoService {
             data,
             id_medico,
             id_clinica,
-            hora
+            hora,
+            id_usuario
         });
 
         await this.agendamentoRepository.save(agendamento);

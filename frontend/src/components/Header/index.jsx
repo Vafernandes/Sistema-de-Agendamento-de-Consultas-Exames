@@ -5,8 +5,12 @@ import { Button } from 'primereact/button';
 import styles from './styles.module.scss';
 
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUsuarioRequest } from '../../store/Usuario/action';
 
 export default function TopMenu() {
+    const state = useSelector(state => state);
+    const dispatch = useDispatch();
     const [visibilidadeMenu, setVisibilidadeMenu] = useState(false);
 
     const items = [
@@ -43,12 +47,20 @@ export default function TopMenu() {
                     <i className="pi pi-bars" style={{ 'fontSize': '2em', color: 'var(--gray-800)' }}></i>
                 </Button>
 
-                <Link href="/Login">
-                    <a>
-                    <Button label="Entrar" className="p-ml-auto p-button-success" />
-                    </a>
-                </Link>
-                
+                {state.usuario.dadosAutenticacao.usuario !== undefined ?
+                    <div className="p-d-flex p-flex-row p-ai-center">
+                        <p className="p-mr-5">{state.usuario.dadosAutenticacao.usuario.nome}</p>
+                        <Button label="Sair" className="p-button-secondary" onClick={() => dispatch(logoutUsuarioRequest())}/>
+                    </div> :
+                    <Link href="/Login">
+                        <a>
+                            <Button label="Entrar" className="p-ml-auto p-button-success" />
+                        </a>
+                    </Link>
+                }
+
+
+
             </div>
         </>
     )

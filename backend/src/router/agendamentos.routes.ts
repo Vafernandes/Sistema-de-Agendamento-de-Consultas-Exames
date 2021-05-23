@@ -11,7 +11,8 @@ agendamentosRouter.post('/', async (request, response) => {
             data,
             id_medico,
             id_clinica,
-            hora
+            hora,
+            id_usuario
          } = request.body;
 
         const agendamentoService = new AgendamentoService();
@@ -21,7 +22,8 @@ agendamentosRouter.post('/', async (request, response) => {
             data, 
             id_medico,
             id_clinica,
-            hora 
+            hora,
+            id_usuario
         });
 
         return response.status(201).json(agendamento);

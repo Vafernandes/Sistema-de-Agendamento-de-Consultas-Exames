@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGenerat
 import { Clinica } from "./Clinica";
 import { Medico } from "./Medico";
 import { Servicos } from "./Servicos";
+import { Usuario } from "./Usuario";
 
 @Entity('agendamentos')
 class Agendamento {
@@ -17,6 +18,9 @@ class Agendamento {
 
     @Column()
     id_clinica: string;
+
+    @Column()
+    id_usuario: string;
     
     @Column()
     data: string;
@@ -35,6 +39,10 @@ class Agendamento {
     @ManyToOne(() => Clinica)
     @JoinColumn({ name: 'id_clinica' })
     clinica: Clinica;
+
+    @ManyToOne(() => Usuario)
+    @JoinColumn({ name: 'id_usuario' })
+    usuario: Usuario;
 
     @CreateDateColumn()
     created_at: Date;

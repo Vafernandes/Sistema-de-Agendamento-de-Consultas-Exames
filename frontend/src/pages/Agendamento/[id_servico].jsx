@@ -25,8 +25,6 @@ export default function Agendamento(props) {
     const [endereco, setEndereco] = useState('');
     const [medico, setMedico] = useState('');
 
-    console.log(medico)
-
     const [displayResponsive, setDisplayResponsive] = useState(false);
 
     const [horariosDeUmaClinica, setHorariosDeUmaClinica] = useState([])
@@ -60,7 +58,8 @@ export default function Agendamento(props) {
             data: dataAgendamento,
             id_medico: medico.id,
             id_clinica: endereco.id,
-            hora: horario
+            hora: horario,
+            id_usuario: state.usuario.dadosAutenticacao.usuario.id
         }
 
         dispatch(cadastroAgendamentoRequest(agendamento))
