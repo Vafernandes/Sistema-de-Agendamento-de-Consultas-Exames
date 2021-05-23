@@ -9,6 +9,10 @@ function* cadastrar(action) {
   try {
     
     const { nome, preco, tipo_servico, clinicas } = action.payload.dadosCadastrais;
+    
+    if(tipo_servico.name === 'Teste Covid') {
+      tipo_servico.name = 'Teste'
+    }
 
     const servico = {
       nome, 
@@ -71,8 +75,6 @@ function* listarPorIdAgendamento(action) {
     const id = action.payload.id;
 
     const response = yield api.get(`/servicos/listar/clinicasServico/${id}`);
-
-    console.log(response.data)
 
     yield put(listarClinicaPorIdAgendamentoSuccess(response.data))
   } catch (error) {
