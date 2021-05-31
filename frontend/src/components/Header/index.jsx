@@ -22,8 +22,7 @@ export default function TopMenu() {
     ];
 
     const redirect = items.map((item) => (
-        <li key={item.label} >
-            <i className={`${item.icon} p-mr-2`} />
+        <li className={styles.itemMenu} key={item.label} >
             <Link href={`${item.to}`}>
                 <a>
                     {item.label}
@@ -43,14 +42,17 @@ export default function TopMenu() {
             </Sidebar>
 
             <div className={styles.headerContainer}>
-                <Button className="p-mr-2 p-button-rounded p-button-text" onClick={() => setVisibilidadeMenu(true)}>
-                    <i className="pi pi-bars" style={{ 'fontSize': '2em', color: 'var(--gray-800)' }}></i>
-                </Button>
+                {state.usuario.dadosAutenticacao.usuario !== undefined ?
+                    <Button className="p-mr-2 p-button-rounded p-button-text" onClick={() => setVisibilidadeMenu(true)}>
+                        <i className="pi pi-bars" style={{ 'fontSize': '2em', color: 'var(--gray-800)' }}></i>
+                    </Button>
+                    : <div />
+                }
 
                 {state.usuario.dadosAutenticacao.usuario !== undefined ?
                     <div className="p-d-flex p-flex-row p-ai-center">
                         <p className="p-mr-5">{state.usuario.dadosAutenticacao.usuario.nome}</p>
-                        <Button label="Sair" className="p-button-secondary" onClick={() => dispatch(logoutUsuarioRequest())}/>
+                        <Button label="Sair" className="p-button-secondary" onClick={() => dispatch(logoutUsuarioRequest())} />
                     </div> :
                     <Link href="/Login">
                         <a>

@@ -1,5 +1,5 @@
 import { InputText } from "primereact/inputtext"
-import {Password} from 'primereact/password';
+import { Password } from 'primereact/password';
 import { Field, Form } from "react-final-form"
 import Botoes from "../../components/Botoes"
 import styles from './styles.module.scss'
@@ -38,7 +38,7 @@ export default function Login() {
                                     render={({ input }) => (
                                         <span className="p-d-flex p-flex-column">
                                             <label>Senha</label>
-                                            <Password feedback={false} {...input}/>
+                                            <Password className="p-d-flex p-flex-column" feedback={false} {...input} />
                                         </span>
                                     )}
                                 />
@@ -54,11 +54,12 @@ export default function Login() {
                     </form>
                 )}
             />
-            <Link href="/Cadastro/Usuario">
-            <a>
-                Não tem uma conta? Cadastre-se
-            </a>
-            </Link>
+            <p className={styles.cadastrese}>
+                Não tem uma conta? 
+                <Link href="/Cadastro/Usuario">
+                    <a> Cadastre-se</a>
+                </Link>
+            </p>
         </div>
     )
 }

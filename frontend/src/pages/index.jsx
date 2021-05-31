@@ -8,7 +8,7 @@ export default function SidebarDemo() {
             <div className="p-d-flex p-as-center p-flex-column" style={{
                 marginTop: '50px', marginBottom: '30px', padding: '30px'
             }}>
-                <div className="p-mr-2 p-as-center">
+                <div className="p-mr-2 p-as-center" style={{ marginBottom: '1rem' }}>
                     <h1>Faça seu agendamento agora!</h1>
                 </div>
                 <div className="p-mr-2 p-as-center">

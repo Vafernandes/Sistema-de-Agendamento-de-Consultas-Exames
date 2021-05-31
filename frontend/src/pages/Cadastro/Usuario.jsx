@@ -104,7 +104,7 @@ function Usuario(props) {
                                                 render={({ input }) => (
                                                     <span className="p-d-flex p-flex-column">
                                                         <label>Senha</label>
-                                                        <Password {...input} />
+                                                        <Password className="p-d-flex p-flex-column" {...input} />
                                                     </span>
                                                 )}
                                             />
@@ -114,7 +114,9 @@ function Usuario(props) {
 
                                     <div className={styles.butaoFormulario}>
                                         <Botoes botoes={[
-                                            { nome: 'Realizar Cadastro', tipo: 'success', icone: 'pi-check', submit: 'submit' }
+                                            { nome: 'Realizar Cadastro', tipo: 'success', icone: 'pi-check', submit: 'submit' },
+                                            { nome: 'Voltar', tipo: 'info', submit: 'submit',  func: () => Router.push('/Login')}
+
                                         ]} />
                                     </div>
 

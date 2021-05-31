@@ -219,8 +219,6 @@ export default function Medicos() {
                         <Card style={{ marginBottom: '20px' }}>
                             <Botoes botoes={[
                                 { nome: 'Novo', tipo: 'success', icone: 'pi-check', func: () => { setAtivarCadastro(true) } },
-                                { nome: 'Editar', tipo: 'info', icone: 'pi-pencil', func: () => { setAtivarCadastro(true) } },
-                                { nome: 'Excluir', tipo: 'danger', icone: 'pi-trash' }
                             ]} />
                         </Card>
 

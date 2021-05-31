@@ -20,3 +20,14 @@
         text-transform: capitalize;
     }
 }
+
+.itemMenu {
+    margin: 1rem 0 1rem;
+    padding: 0.5rem;
+}
+
+.itemMenu:hover {
+    border-radius: 5px;
+    background-color: #ff4081;
+    color: #fff;
+}
