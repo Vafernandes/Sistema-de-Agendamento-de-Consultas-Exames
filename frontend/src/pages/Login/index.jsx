@@ -1,4 +1,4 @@
-import { InputText } from "primereact/inputtext"
+import { InputMask } from 'primereact/inputmask';
 import { Password } from 'primereact/password';
 import { Field, Form } from "react-final-form"
 import Botoes from "../../components/Botoes"
@@ -26,7 +26,7 @@ export default function Login() {
                                     render={({ input }) => (
                                         <span className="p-d-flex p-flex-column">
                                             <label>Email/CPF</label>
-                                            <InputText {...input} />
+                                            <InputMask mask="999.999.999-99" {...input} />
                                         </span>
                                     )}
                                 />

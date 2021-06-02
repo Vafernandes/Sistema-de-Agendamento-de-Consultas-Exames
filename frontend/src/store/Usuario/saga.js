@@ -48,8 +48,10 @@ function* autenticar(action) {
   try {
     const { cpf, senha } = action.payload.dadosLogin;
 
+    const retirandoMascaraDoCPF = cpf.replace(/(\w*).(\w*).(\w*)-(\w*)/, '$1$2$3$4');
+
     const login = {
-      cpf, 
+      cpf: retirandoMascaraDoCPF, 
       senha
     }
 
